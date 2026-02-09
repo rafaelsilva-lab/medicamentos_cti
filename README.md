@@ -1,1 +1,3 @@
-# medicamentos_cti
+# Medicamentos_cti
+
+Medicamentos comumente utilizados em CTI
