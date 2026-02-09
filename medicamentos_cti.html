@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicamentos de Terapia Intensiva</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .search-container {
+            padding: 30px 40px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px 20px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .filter-select {
+            padding: 15px 20px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-size: 16px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 200px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .clear-btn {
+            padding: 15px 30px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .clear-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        }
+
+        .stats {
+            padding: 20px 40px;
+            background: #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .class-section {
+            margin-bottom: 40px;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .class-title {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .class-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .medications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .medication-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .medication-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-color: #667eea;
+        }
+
+        .medication-card.active {
+            border-color: #667eea;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .medication-commercial {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .click-indicator {
+            font-size: 0.8em;
+            color: #667eea;
+            opacity: 0.7;
+        }
+
+        .medication-generic {
+            color: #667eea;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .medication-description {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #e9ecef;
+            color: #4a5568;
+            line-height: 1.6;
+            font-size: 0.95em;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .medication-card.active .medication-description {
+            max-height: 500px;
+            transition: max-height 0.5s ease-in;
+        }
+
+        .description-title {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+
+        .no-results-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .no-results-text {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .medications-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-input,
+            .filter-select,
+            .clear-btn {
+                width: 100%;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💊 Medicamentos de Terapia Intensiva</h1>
+            <p>Guia completo de medicamentos utilizados em CTI • Clique nos cards para ver descrições</p>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput" 
+                    placeholder="🔍 Buscar medicamento (nome comercial ou genérico)..."
+                >
+                <select class="filter-select" id="classFilter">
+                    <option value="">Todas as classes</option>
+                </select>
+                <button class="clear-btn" id="clearBtn">Limpar</button>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="totalMeds">0</div>
+                <div class="stat-label">Medicamentos</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="totalClasses">0</div>
+                <div class="stat-label">Classes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="visibleMeds">0</div>
+                <div class="stat-label">Exibidos</div>
+            </div>
+        </div>
+
+        <div class="content" id="content">
+            <!-- Content will be generated by JavaScript -->
+        </div>
+
+        <div class="no-results hidden" id="noResults">
+            <div class="no-results-icon">🔍</div>
+            <div class="no-results-text">Nenhum medicamento encontrado</div>
+            <p>Tente buscar por outro termo ou selecione uma classe diferente</p>
+        </div>
+    </div>
+
+    <script>
+        const medications = {
+            "Anestésicos": [
+                { 
+                    commercial: "Fentanil", 
+                    generic: "Fentanila",
+                    description: "Analgésico opioide potente usado para alívio de dor intensa, anestesia geral e sedação em procedimentos. Possui início de ação rápido e curta duração."
+                },
+                { 
+                    commercial: "Diprivan", 
+                    generic: "Propofol",
+                    description: "Anestésico intravenoso de ação rápida usado para indução e manutenção de anestesia geral e sedação em UTI. Apresenta recuperação rápida e suave."
+                },
+                { 
+                    commercial: "Xilocaína", 
+                    generic: "Lidocaína",
+                    description: "Anestésico local e antiarrítmico. Bloqueia canais de sódio, prevenindo a geração e condução de impulsos nervosos. Usado também em arritmias ventriculares."
+                }
+            ],
+            "Ansiolíticos": [
+                { 
+                    commercial: "Frontal", 
+                    generic: "Alprazolam",
+                    description: "Benzodiazepínico usado no tratamento de ansiedade e transtorno do pânico. Possui início de ação rápido e meia-vida intermediária."
+                },
+                { 
+                    commercial: "Valium", 
+                    generic: "Diazepam",
+                    description: "Benzodiazepínico de longa ação usado para ansiedade, espasmos musculares, convulsões e sedação. Possui propriedades ansiolíticas, anticonvulsivantes e relaxantes musculares."
+                },
+                { 
+                    commercial: "Lorax", 
+                    generic: "Lorazepam",
+                    description: "Benzodiazepínico de ação intermediária usado para ansiedade, insônia e status epilepticus. Amplamente utilizado em UTI para sedação e controle de agitação."
+                },
+                { 
+                    commercial: "Urbanil", 
+                    generic: "Clobazam",
+                    description: "Benzodiazepínico usado principalmente como anticonvulsivante adjuvante. Também possui propriedades ansiolíticas com menor potencial sedativo."
+                }
+            ],
+            "Anticonvulsivantes": [
+                { 
+                    commercial: "Gardenal", 
+                    generic: "Fenobarbital",
+                    description: "Barbitúrico anticonvulsivante de longa ação. Usado no tratamento de convulsões tônico-clônicas e parciais. Também possui propriedades sedativas e hipnóticas."
+                },
+                { 
+                    commercial: "Hidantal", 
+                    generic: "Fenitoína",
+                    description: "Anticonvulsivante usado no tratamento e prevenção de crises epilépticas. Estabiliza membranas neuronais bloqueando canais de sódio voltagem-dependentes."
+                },
+                { 
+                    commercial: "Rivotril", 
+                    generic: "Clonazepam",
+                    description: "Benzodiazepínico anticonvulsivante usado no tratamento de epilepsia, transtorno do pânico e espasmos musculares. Possui ação prolongada."
+                },
+                { 
+                    commercial: "Neurontin", 
+                    generic: "Gabapentina",
+                    description: "Anticonvulsivante usado no tratamento de epilepsia parcial e dor neuropática. Atua modulando canais de cálcio voltagem-dependentes."
+                },
+                { 
+                    commercial: "Tegretol", 
+                    generic: "Carbamazepina",
+                    description: "Anticonvulsivante usado no tratamento de epilepsia, neuralgia do trigêmeo e transtorno bipolar. Bloqueia canais de sódio voltagem-dependentes."
+                },
+                { 
+                    commercial: "Depakene", 
+                    generic: "Ácido valproico",
+                    description: "Anticonvulsivante de amplo espectro usado no tratamento de diversos tipos de epilepsia, transtorno bipolar e profilaxia de enxaqueca. Atua aumentando níveis de GABA."
+                }
+            ],
+            "Antidepressivos": [
+                { 
+                    commercial: "Prozac", 
+                    generic: "Fluoxetina",
+                    description: "Antidepressivo inibidor seletivo da recaptação de serotonina (ISRS). Usado no tratamento de depressão, transtorno obsessivo-compulsivo e bulimia nervosa."
+                },
+                { 
+                    commercial: "Tryptanol", 
+                    generic: "Amitriptilina",
+                    description: "Antidepressivo tricíclico usado no tratamento de depressão, dor neuropática, enxaqueca profilática e insônia. Possui efeitos sedativos significativos."
+                }
+            ],
+            "Analgésicos": [
+                { 
+                    commercial: "Novalgina", 
+                    generic: "Dipirona",
+                    description: "Analgésico e antipirético não opioide usado para dor leve a moderada e febre. Possui também propriedades espasmolíticas."
+                },
+                { 
+                    commercial: "Tylenol", 
+                    generic: "Paracetamol",
+                    description: "Analgésico e antipirético usado para dor leve a moderada e febre. Não possui propriedades anti-inflamatórias significativas. Seguro em doses terapêuticas."
+                },
+                { 
+                    commercial: "Dimorf", 
+                    generic: "Morfina",
+                    description: "Analgésico opioide potente usado para dor moderada a severa. Padrão-ouro para analgesia em dor aguda intensa e dor oncológica."
+                },
+                { 
+                    commercial: "Tramal", 
+                    generic: "Tramadol",
+                    description: "Analgésico opioide fraco com ação dual: agonista opioide e inibidor de recaptação de serotonina/noradrenalina. Usado para dor moderada."
+                },
+                { 
+                    commercial: "Fentanil", 
+                    generic: "Fentanila",
+                    description: "Analgésico opioide potente (50-100x mais que morfina) usado para dor severa, anestesia e sedação em UTI. Início de ação rápido."
+                }
+            ],
+            "Antipsicóticos": [
+                { 
+                    commercial: "Haldol", 
+                    generic: "Haloperidol",
+                    description: "Antipsicótico típico usado no tratamento de psicoses, esquizofrenia, delirium e agitação psicomotora. Amplamente usado em UTI para controle de delirium."
+                },
+                { 
+                    commercial: "Seroquel", 
+                    generic: "Quetiapina",
+                    description: "Antipsicótico atípico usado no tratamento de esquizofrenia, transtorno bipolar e depressão. Possui menor risco de efeitos extrapiramidais."
+                },
+                { 
+                    commercial: "Risperidal", 
+                    generic: "Risperidona",
+                    description: "Antipsicótico atípico usado no tratamento de esquizofrenia, transtorno bipolar e irritabilidade associada ao autismo."
+                }
+            ],
+            "Hipnóticos Sedativos": [
+                { 
+                    commercial: "Dormonid", 
+                    generic: "Midazolam",
+                    description: "Benzodiazepínico de ação curta usado para sedação, indução anestésica e procedimentos. Amplamente utilizado em UTI para sedação consciente e ventilação mecânica."
+                }
+            ],
+            "Antiarrítmicos": [
+                { 
+                    commercial: "Adenocard", 
+                    generic: "Adenosina",
+                    description: "Antiarrítmico usado no tratamento agudo de taquicardias supraventriculares. Possui ação ultra-rápida (segundos) e meia-vida muito curta."
+                },
+                { 
+                    commercial: "Ancoron", 
+                    generic: "Amiodarona",
+                    description: "Antiarrítmico classe III usado no tratamento de arritmias ventriculares e supraventriculares graves. Possui múltiplos mecanismos de ação."
+                }
+            ],
+            "Bloqueadores Neuromusculares": [
+                { 
+                    commercial: "Pavulon", 
+                    generic: "Pancurônio",
+                    description: "Bloqueador neuromuscular não-despolarizante de longa duração usado para facilitar intubação e ventilação mecânica. Pode causar taquicardia."
+                },
+                { 
+                    commercial: "Esmeron", 
+                    generic: "Rocurônio",
+                    description: "Bloqueador neuromuscular não-despolarizante de ação intermediária. Usado para intubação de sequência rápida e manutenção de relaxamento muscular."
+                },
+                { 
+                    commercial: "Norcuron", 
+                    generic: "Vecurônio",
+                    description: "Bloqueador neuromuscular não-despolarizante de ação intermediária. Hemodinamicamente estável, sem efeitos cardiovasculares significativos."
+                },
+                { 
+                    commercial: "Ninbium", 
+                    generic: "Cisatracúrio",
+                    description: "Bloqueador neuromuscular não-despolarizante de ação intermediária. Degradado por eliminação de Hofmann, não depende de função renal ou hepática."
+                }
+            ],
+            "Aminas e Substâncias Vasoativas": [
+                { 
+                    commercial: "Dobutrex", 
+                    generic: "Dobutamina",
+                    description: "Inotrópico positivo sintético. Agonista beta-1 adrenérgico usado no tratamento de insuficiência cardíaca aguda e choque cardiogênico."
+                },
+                { 
+                    commercial: "Adrenalina", 
+                    generic: "Epinefrina",
+                    description: "Catecolamina com ação alfa e beta adrenérgica. Usada em PCR, anafilaxia, choque séptico e broncoespasmo severo. Primeira linha em parada cardíaca."
+                },
+                { 
+                    commercial: "Efedrina", 
+                    generic: "Efedrina",
+                    description: "Simpaticomimético de ação mista usado para tratar hipotensão, principalmente em contexto anestésico. Causa liberação de noradrenalina e ação direta."
+                },
+                { 
+                    commercial: "Noradrenalina", 
+                    generic: "Norepinefrina",
+                    description: "Vasopressor potente com ação alfa adrenérgica predominante. Primeira linha no tratamento de choque séptico. Aumenta pressão arterial com mínimo efeito cronotropico."
+                },
+                { 
+                    commercial: "Vasopressina", 
+                    generic: "Vasopressina",
+                    description: "Hormônio antidiurético com potente ação vasoconstritora. Usado em choque refratário, especialmente séptico, e parada cardíaca. Não age via receptores adrenérgicos."
+                },
+                { 
+                    commercial: "Isordil", 
+                    generic: "Dinitrato de isossorbida",
+                    description: "Vasodilatador nitrato usado no tratamento de angina, insuficiência cardíaca e hipertensão pulmonar. Reduz pré e pós-carga cardíaca."
+                }
+            ],
+            "Diuréticos": [
+                { 
+                    commercial: "Lasix", 
+                    generic: "Furosemida",
+                    description: "Diurético de alça potente que inibe reabsorção de sódio e cloro na alça de Henle. Usado em edema, ICC, hipertensão e insuficiência renal aguda."
+                },
+                { 
+                    commercial: "Clorana", 
+                    generic: "Ácido etacrínico",
+                    description: "Diurético de alça alternativo à furosemida. Usado em pacientes com alergia a sulfonamidas ou resistência a outros diuréticos de alça."
+                },
+                { 
+                    commercial: "Aldactone", 
+                    generic: "Espironolactona",
+                    description: "Diurético poupador de potássio, antagonista de aldosterona. Usado em ICC, hipertensão, ascite e hipocalemia. Reduz mortalidade em ICC grave."
+                },
+                { 
+                    commercial: "Manitol", 
+                    generic: "Manitol",
+                    description: "Diurético osmótico usado para reduzir pressão intracraniana, tratar edema cerebral, insuficiência renal aguda oligúrica e glaucoma agudo."
+                }
+            ],
+            "Broncodilatadores": [
+                { 
+                    commercial: "Atrovent", 
+                    generic: "Brometo de ipratrópio",
+                    description: "Broncodilatador anticolinérgico (antagonista muscarínico) usado no tratamento de DPOC e asma. Reduz broncoconstrição mediada por acetilcolina."
+                },
+                { 
+                    commercial: "Berotec", 
+                    generic: "Fenoterol",
+                    description: "Broncodilatador beta-2 agonista de ação rápida usado no tratamento de broncoespasmo agudo em asma e DPOC."
+                },
+                { 
+                    commercial: "Aerolin", 
+                    generic: "Salbutamol",
+                    description: "Broncodilatador beta-2 agonista seletivo de curta ação. Primeira linha para alívio rápido de broncoespasmo em asma e DPOC."
+                }
+            ],
+            "Anti-Hipertensivos": [
+                { 
+                    commercial: "Nipride", 
+                    generic: "Nitroprussiato de sódio",
+                    description: "Vasodilatador arterial e venoso potente de ação ultra-rápida. Usado em emergências hipertensivas e insuficiência cardíaca aguda. Requer monitorização rigorosa."
+                },
+                { 
+                    commercial: "Tridil", 
+                    generic: "Nitroglicerina",
+                    description: "Vasodilatador nitrato usado em angina instável, IAM, emergências hipertensivas e ICC. Predominantemente venodilatador, reduz pré-carga."
+                },
+                { 
+                    commercial: "Coreg", 
+                    generic: "Carvedilol",
+                    description: "Beta-bloqueador não seletivo com ação alfa-bloqueadora. Usado em ICC, hipertensão e pós-IAM. Reduz mortalidade em insuficiência cardíaca."
+                },
+                { 
+                    commercial: "Selozok", 
+                    generic: "Metoprolol",
+                    description: "Beta-bloqueador beta-1 seletivo usado em hipertensão, angina, arritmias, IAM e ICC. Reduz frequência cardíaca e contratilidade."
+                },
+                { 
+                    commercial: "Inderal", 
+                    generic: "Propranolol",
+                    description: "Beta-bloqueador não seletivo usado em hipertensão, angina, arritmias, tremor essencial, enxaqueca profilática e hipertireoidismo."
+                },
+                { 
+                    commercial: "Balcor", 
+                    generic: "Verapamil",
+                    description: "Bloqueador de canal de cálcio não-diidropiridínico. Usado em hipertensão, angina e arritmias supraventriculares. Reduz frequência cardíaca."
+                },
+                { 
+                    commercial: "Nifedipina", 
+                    generic: "Nifedipina",
+                    description: "Bloqueador de canal de cálcio diidropiridínico. Vasodilatador arterial potente usado em hipertensão e angina. Formulação de liberação prolongada preferida."
+                },
+                { 
+                    commercial: "Cozaar", 
+                    generic: "Losartana",
+                    description: "Bloqueador do receptor de angiotensina II (BRA) usado em hipertensão, ICC e nefropatia diabética. Alternativa aos IECA quando há tosse."
+                },
+                { 
+                    commercial: "Capotem", 
+                    generic: "Captopril",
+                    description: "Inibidor da ECA (IECA) de curta ação usado em hipertensão, ICC, pós-IAM e nefropatia diabética. Neuroprotetor e cardioprotetor."
+                },
+                { 
+                    commercial: "Renitec", 
+                    generic: "Enalapril",
+                    description: "Inibidor da ECA de longa ação usado em hipertensão, ICC e disfunção ventricular pós-IAM. Reduz mortalidade em insuficiência cardíaca."
+                },
+                { 
+                    commercial: "Nepresol", 
+                    generic: "Maleato de enalapril",
+                    description: "Forma de sal do enalapril, inibidor da ECA usado nas mesmas indicações: hipertensão, ICC e proteção cardiovascular."
+                },
+                { 
+                    commercial: "Adalat", 
+                    generic: "Nifedipina",
+                    description: "Bloqueador de canal de cálcio diidropiridínico. Vasodilatador arterial usado em hipertensão e angina vasoespástica (Prinzmetal)."
+                }
+            ],
+            "Hipolipemiantes": [
+                { 
+                    commercial: "Zocor", 
+                    generic: "Sinvastatina",
+                    description: "Estatina (inibidor da HMG-CoA redutase) usada para reduzir colesterol LDL e triglicerídeos. Previne eventos cardiovasculares e reduz mortalidade."
+                }
+            ],
+            "Antiagregantes Plaquetários": [
+                { 
+                    commercial: "AAS", 
+                    generic: "Ácido acetilsalicílico",
+                    description: "Antiagregante plaquetário que inibe irreversivelmente ciclooxigenase. Usado em prevenção primária e secundária de eventos cardiovasculares e IAM agudo."
+                },
+                { 
+                    commercial: "Plavix", 
+                    generic: "Clopidogrel",
+                    description: "Antiagregante plaquetário inibidor de receptor P2Y12. Usado em síndrome coronariana aguda, pós-stent e prevenção de eventos cardiovasculares."
+                },
+                { 
+                    commercial: "Agrastat", 
+                    generic: "Tirofibana",
+                    description: "Inibidor da glicoproteína IIb/IIIa plaquetária. Antiagregante potente usado em síndrome coronariana aguda de alto risco e intervenções coronárias percutâneas."
+                }
+            ],
+            "Anticoagulantes": [
+                { 
+                    commercial: "Heparina", 
+                    generic: "Heparina",
+                    description: "Anticoagulante que potencializa antitrombina III. Usado em TEV, IAM, fibrilação atrial, DIC e durante hemodiálise. Requer monitorização com TTPa."
+                },
+                { 
+                    commercial: "Clexane", 
+                    generic: "Enoxaparina",
+                    description: "Heparina de baixo peso molecular. Usado em profilaxia e tratamento de TVP/TEP, síndrome coronariana aguda. Não requer monitorização rotineira."
+                },
+                { 
+                    commercial: "Marevam", 
+                    generic: "Varfarina",
+                    description: "Anticoagulante oral antagonista de vitamina K. Usado em fibrilação atrial, próteses valvares, TEV. Requer monitorização com INR."
+                },
+                { 
+                    commercial: "Arixtra", 
+                    generic: "Fondaparinux",
+                    description: "Inibidor sintético seletivo do fator Xa. Usado em profilaxia e tratamento de TEV e síndrome coronariana aguda. Meia-vida longa."
+                }
+            ],
+            "Inibidores de Secreção Gástrica": [
+                { 
+                    commercial: "Nexium", 
+                    generic: "Esomeprazol",
+                    description: "Inibidor de bomba de prótons (IBP) usado no tratamento de DRGE, úlceras pépticas, esofagite erosiva e profilaxia de úlcera de estresse em UTI."
+                },
+                { 
+                    commercial: "Pantoprazol", 
+                    generic: "Pantoprazol",
+                    description: "Inibidor de bomba de prótons usado em DRGE, úlceras, síndrome de Zollinger-Ellison e profilaxia de sangramento gastrointestinal em pacientes críticos."
+                },
+                { 
+                    commercial: "Antak", 
+                    generic: "Ranitidina",
+                    description: "Antagonista H2 usado no tratamento de úlceras pépticas, DRGE e profilaxia de úlcera de estresse. Menos potente que IBP."
+                },
+                { 
+                    commercial: "Losec", 
+                    generic: "Omeprazol",
+                    description: "Inibidor de bomba de prótons pioneiro. Usado em DRGE, úlceras pépticas, erradicação de H. pylori e profilaxia de sangramento gastrointestinal."
+                }
+            ],
+            "Antieméticos": [
+                { 
+                    commercial: "Plasil", 
+                    generic: "Metoclopramida",
+                    description: "Antiemético procinético antagonista dopaminérgico. Usado em náuseas, vômitos e gastroparesia. Pode causar efeitos extrapiramidais."
+                },
+                { 
+                    commercial: "Nausedrom", 
+                    generic: "Ondansetrona",
+                    description: "Antagonista seletivo 5-HT3 usado em náuseas e vômitos induzidos por quimioterapia, radioterapia e pós-operatórios. Muito eficaz e bem tolerado."
+                },
+                { 
+                    commercial: "Digesan", 
+                    generic: "Bromoprida",
+                    description: "Antiemético procinético similar à metoclopramida. Usado em náuseas, vômitos e distúrbios da motilidade gastrointestinal."
+                }
+            ],
+            "Laxativos": [
+                { 
+                    commercial: "Farlac", 
+                    generic: "Lactulose",
+                    description: "Laxativo osmótico dissacarídeo sintético. Usado em constipação e encefalopatia hepática. Acidifica cólon reduzindo absorção de amônia."
+                },
+                { 
+                    commercial: "Glicerina", 
+                    generic: "Glicerol",
+                    description: "Laxativo osmótico de ação local usado via retal em supositórios. Estimula peristaltismo por irritação e lubrificação."
+                },
+                { 
+                    commercial: "Peg", 
+                    generic: "Polietilenoglicol",
+                    description: "Laxativo osmótico usado em constipação crônica e preparo intestinal. Retém água no lúmen intestinal sem causar desequilíbrio eletrolítico significativo."
+                }
+            ],
+            "Corticoides": [
+                { 
+                    commercial: "Decadron", 
+                    generic: "Dexametasona",
+                    description: "Corticoide de alta potência e longa duração. Usado em edema cerebral, choque séptico, náusea quimioterápica, inflamação e condições alérgicas graves."
+                },
+                { 
+                    commercial: "Cortison", 
+                    generic: "Cortisona",
+                    description: "Corticoide de baixa potência usado em terapia de reposição na insuficiência adrenal e condições inflamatórias leves."
+                },
+                { 
+                    commercial: "Meticorten", 
+                    generic: "Prednisona",
+                    description: "Corticoide de potência intermediária usado em doenças autoimunes, alergias, asma, DPOC exacerbado e condições inflamatórias diversas."
+                }
+            ],
+            "Antifúngicos Sistêmicos": [
+                { 
+                    commercial: "Mycamine", 
+                    generic: "Micafungina",
+                    description: "Equinocandina antifúngica que inibe síntese de glucana da parede celular fúngica. Usado em candidíase invasiva e profilaxia em transplantados."
+                },
+                { 
+                    commercial: "Zoltec", 
+                    generic: "Fluconazol",
+                    description: "Antifúngico triazólico usado em candidíase sistêmica e mucocutânea, criptococose e profilaxia fúngica. Excelente penetração no SNC."
+                },
+                { 
+                    commercial: "Anfotericina", 
+                    generic: "Anfotericina B",
+                    description: "Antifúngico poliênico de amplo espectro. Padrão-ouro para infecções fúngicas invasivas graves. Nefrotóxico, requer monitorização cuidadosa."
+                },
+                { 
+                    commercial: "Micostatin", 
+                    generic: "Nistatina",
+                    description: "Antifúngico poliênico usado topicamente e via oral (não absorvido) para candidíase oral, esofágica e cutânea."
+                }
+            ],
+            "Glicopeptídeos": [
+                { 
+                    commercial: "Targocid", 
+                    generic: "Teicoplanina",
+                    description: "Antibiótico glicopeptídeo usado em infecções por Gram-positivos, especialmente MRSA. Similar à vancomicina mas com meia-vida mais longa."
+                },
+                { 
+                    commercial: "Vanco", 
+                    generic: "Vancomicina",
+                    description: "Antibiótico glicopeptídeo usado em infecções graves por Gram-positivos resistentes, especialmente MRSA, enterococos e C. difficile. Requer monitorização de níveis."
+                }
+            ],
+            "Antimicrobianos": [
+                { 
+                    commercial: "Poli B", 
+                    generic: "Polimixina B",
+                    description: "Antibiótico polipeptídico usado em infecções por Gram-negativos multirresistentes, incluindo Pseudomonas e Acinetobacter. Nefrotóxico e neurotóxico."
+                },
+                { 
+                    commercial: "Rifaldin", 
+                    generic: "Rifampicina",
+                    description: "Antibiótico usado principalmente em tuberculose. Também usado em infecções estafilocócicas, profilaxia de meningite e endocardite em combinação."
+                },
+                { 
+                    commercial: "Tazocin", 
+                    generic: "Piperacilina + Tazobactam",
+                    description: "Penicilina de amplo espectro combinada com inibidor de beta-lactamase. Usado em infecções intra-abdominais, pneumonias nosocomiais e sepse grave."
+                },
+                { 
+                    commercial: "Meropenem", 
+                    generic: "Meropenem",
+                    description: "Carbapenêmico de amplo espectro usado em infecções graves por organismos multirresistentes, sepse, meningite bacteriana e infecções intra-abdominais."
+                },
+                { 
+                    commercial: "Oxacilina", 
+                    generic: "Oxacilina",
+                    description: "Penicilina resistente à penicilinase usada em infecções por Staphylococcus aureus sensível à meticilina (MSSA), incluindo endocardite e osteomielite."
+                },
+                { 
+                    commercial: "Flagyl", 
+                    generic: "Metronidazol",
+                    description: "Antimicrobiano com ação contra anaeróbios e protozoários. Usado em infecções intra-abdominais, colite por C. difficile, abscesso cerebral e amebíase."
+                },
+                { 
+                    commercial: "Rocefin", 
+                    generic: "Ceftriaxona",
+                    description: "Cefalosporina de 3ª geração de amplo espectro. Usado em meningite, gonorreia, pneumonia, sepse e infecções graves. Dose única diária."
+                },
+                { 
+                    commercial: "Claritron", 
+                    generic: "Claritromicina",
+                    description: "Macrolídeo usado em infecções respiratórias, H. pylori, micobactérias atípicas. Melhor absorção e tolerabilidade que eritromicina."
+                },
+                { 
+                    commercial: "Maxcef", 
+                    generic: "Cefepima",
+                    description: "Cefalosporina de 4ª geração de amplo espectro. Usado em infecções nosocomiais graves, neutropenia febril, pneumonia e infecções por Pseudomonas."
+                },
+                { 
+                    commercial: "Floxacin", 
+                    generic: "Ciprofloxacino",
+                    description: "Fluoroquinolona de amplo espectro. Usado em infecções urinárias complicadas, respiratórias, intra-abdominais, osteomielite e antraz."
+                }
+            ],
+            "Fármacos Mucolíticos": [
+                { 
+                    commercial: "Acetilcisteína", 
+                    generic: "N-acetilcisteína",
+                    description: "Mucolítico que rompe pontes dissulfeto no muco. Usado em secreções respiratórias espessas e como antídoto em intoxicação por paracetamol."
+                }
+            ],
+            "Hormônio Tireoidiano": [
+                { 
+                    commercial: "Puran T4", 
+                    generic: "Levotiroxina",
+                    description: "Hormônio tireoidiano sintético (T4) usado em reposição no hipotireoidismo, supressão de TSH em câncer de tireoide e coma mixedematoso."
+                }
+            ],
+            "Hormônio Hipotalâmico": [
+                { 
+                    commercial: "Syntocinon", 
+                    generic: "Ocitocina",
+                    description: "Hormônio hipotalâmico usado para indução e aumento do trabalho de parto, controle de hemorragia pós-parto e estimulação da ejeção do leite."
+                }
+            ],
+            "Manutenção da Homeostase de Glicose": [
+                { 
+                    commercial: "Humulin", 
+                    generic: "Insulina humana",
+                    description: "Hormônio pancreático usado no tratamento de diabetes mellitus tipo 1 e 2, cetoacidose diabética e controle glicêmico em pacientes críticos."
+                }
+            ],
+            "Anti-Hemorrágico": [
+                { 
+                    commercial: "Kanakion", 
+                    generic: "Fitomenadiona (Vitamina K1)",
+                    description: "Vitamina K usada para reverter efeito de anticoagulantes cumarínicos, tratar deficiência de vitamina K e doença hemorrágica do recém-nascido."
+                }
+            ],
+            "Redução de Gases": [
+                { 
+                    commercial: "Luftal", 
+                    generic: "Simeticona",
+                    description: "Antiflatulento que reduz tensão superficial de bolhas de gás no TGI. Usado em distensão abdominal, flatulência e preparo para exames diagnósticos."
+                }
+            ],
+            "Imunossupressores": [
+                { 
+                    commercial: "Myfortic", 
+                    generic: "Micofenolato de sódio",
+                    description: "Imunossupressor inibidor de síntese de purinas. Usado em prevenção de rejeição em transplante de órgãos sólidos, geralmente combinado com outros imunossupressores."
+                },
+                { 
+                    commercial: "Prograf", 
+                    generic: "Tacrolimo",
+                    description: "Imunossupressor inibidor de calcineurina. Usado em prevenção de rejeição em transplantes de órgãos. Mais potente que ciclosporina com perfil de efeitos colaterais diferente."
+                }
+            ],
+            "Soluções para Infusão": [
+                { 
+                    commercial: "Flexbumin", 
+                    generic: "Albumina Humana",
+                    description: "Proteína plasmática usada para expansão volêmica em hipovolemia, hipoalbuminemia grave, choque, grandes queimados e síndrome hepatorrenal."
+                }
+            ],
+            "Imunoterápico": [
+                { 
+                    commercial: "Flebogamma", 
+                    generic: "Imunoglobulina humana",
+                    description: "Concentrado de anticorpos usado em imunodeficiências primárias, púrpura trombocitopênica imune, síndrome de Guillain-Barré e doenças autoimunes."
+                }
+            ]
+        };
+
+        const searchInput = document.getElementById('searchInput');
+        const classFilter = document.getElementById('classFilter');
+        const clearBtn = document.getElementById('clearBtn');
+        const content = document.getElementById('content');
+        const noResults = document.getElementById('noResults');
+        const totalMeds = document.getElementById('totalMeds');
+        const totalClasses = document.getElementById('totalClasses');
+        const visibleMeds = document.getElementById('visibleMeds');
+
+        function initializeApp() {
+            populateClassFilter();
+            renderMedications();
+            updateStats();
+        }
+
+        function populateClassFilter() {
+            const classes = Object.keys(medications).sort();
+            classes.forEach(className => {
+                const option = document.createElement('option');
+                option.value = className;
+                option.textContent = className;
+                classFilter.appendChild(option);
+            });
+        }
+
+        function renderMedications(searchTerm = '', filterClass = '') {
+            content.innerHTML = '';
+            let visibleCount = 0;
+            let hasResults = false;
+
+            Object.keys(medications).sort().forEach((className, index) => {
+                if (filterClass && className !== filterClass) return;
+
+                const meds = medications[className].filter(med => {
+                    if (!searchTerm) return true;
+                    const term = searchTerm.toLowerCase();
+                    return med.commercial.toLowerCase().includes(term) || 
+                           med.generic.toLowerCase().includes(term);
+                });
+
+                if (meds.length === 0) return;
+
+                hasResults = true;
+                const section = document.createElement('div');
+                section.className = 'class-section';
+
+                const title = document.createElement('div');
+                title.className = 'class-title';
+                
+                const icon = document.createElement('div');
+                icon.className = 'class-icon';
+                icon.textContent = (index + 1);
+                
+                title.appendChild(icon);
+                title.appendChild(document.createTextNode(className));
+                section.appendChild(title);
+
+                const grid = document.createElement('div');
+                grid.className = 'medications-grid';
+
+                meds.forEach(med => {
+                    visibleCount++;
+                    const card = document.createElement('div');
+                    card.className = 'medication-card';
+                    
+                    const commercial = document.createElement('div');
+                    commercial.className = 'medication-commercial';
+                    commercial.innerHTML = `${med.commercial} <span class="click-indicator">ⓘ</span>`;
+                    
+                    const generic = document.createElement('div');
+                    generic.className = 'medication-generic';
+                    generic.textContent = med.generic;
+                    
+                    const description = document.createElement('div');
+                    description.className = 'medication-description';
+                    description.innerHTML = `<div class="description-title">Descrição e Uso:</div>${med.description}`;
+                    
+                    card.appendChild(commercial);
+                    card.appendChild(generic);
+                    card.appendChild(description);
+                    
+                    card.addEventListener('click', function() {
+                        const wasActive = this.classList.contains('active');
+                        
+                        // Remove active class from all cards
+                        document.querySelectorAll('.medication-card').forEach(c => {
+                            c.classList.remove('active');
+                        });
+                        
+                        // Toggle active class on clicked card
+                        if (!wasActive) {
+                            this.classList.add('active');
+                        }
+                    });
+                    
+                    grid.appendChild(card);
+                });
+
+                section.appendChild(grid);
+                content.appendChild(section);
+            });
+
+            if (!hasResults) {
+                content.classList.add('hidden');
+                noResults.classList.remove('hidden');
+            } else {
+                content.classList.remove('hidden');
+                noResults.classList.add('hidden');
+            }
+
+            visibleMeds.textContent = visibleCount;
+        }
+
+        function updateStats() {
+            let total = 0;
+            Object.values(medications).forEach(meds => {
+                total += meds.length;
+            });
+            totalMeds.textContent = total;
+            totalClasses.textContent = Object.keys(medications).length;
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            renderMedications(e.target.value, classFilter.value);
+        });
+
+        classFilter.addEventListener('change', (e) => {
+            renderMedications(searchInput.value, e.target.value);
+        });
+
+        clearBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            classFilter.value = '';
+            renderMedications();
+            // Remove active class from all cards
+            document.querySelectorAll('.medication-card').forEach(c => {
+                c.classList.remove('active');
+            });
+        });
+
+        initializeApp();
+    </script>
+</body>
+</html>
