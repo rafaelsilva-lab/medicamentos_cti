@@ -192,7 +192,6 @@
             transition: all 0.3s;
             cursor: pointer;
             position: relative;
-            overflow: hidden;
         }
 
         .medication-card:hover {
@@ -211,46 +210,39 @@
             font-weight: bold;
             color: #2d3748;
             margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .click-indicator {
-            font-size: 0.8em;
-            color: #667eea;
-            opacity: 0.7;
         }
 
         .medication-generic {
             color: #667eea;
             font-size: 1.1em;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .medication-description {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 2px solid #e9ecef;
-            color: #4a5568;
-            line-height: 1.6;
-            font-size: 0.95em;
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease-out;
+            transition: max-height 0.4s ease-out;
+            color: #4a5568;
+            font-size: 0.95em;
+            line-height: 1.6;
+            border-top: 1px solid #e9ecef;
+            padding-top: 0;
+            margin-top: 0;
         }
 
-        .medication-card.active .medication-description {
+        .medication-description.show {
             max-height: 500px;
-            transition: max-height 0.5s ease-in;
+            padding-top: 15px;
+            margin-top: 15px;
         }
 
-        .description-title {
-            font-weight: 600;
-            color: #667eea;
-            margin-bottom: 8px;
-            font-size: 1em;
+        .click-hint {
+            font-size: 0.85em;
+            color: #9ca3af;
+            text-align: center;
+            margin-top: 10px;
+            font-style: italic;
         }
 
         .no-results {
@@ -274,6 +266,19 @@
             display: none;
         }
 
+        .expand-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.2em;
+            color: #667eea;
+            transition: transform 0.3s;
+        }
+
+        .medication-card.active .expand-icon {
+            transform: rotate(180deg);
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.8em;
@@ -292,10 +297,6 @@
             .clear-btn {
                 width: 100%;
             }
-
-            .content {
-                padding: 20px;
-            }
         }
     </style>
 </head>
@@ -303,7 +304,8 @@
     <div class="container">
         <div class="header">
             <h1>💊 Medicamentos de Terapia Intensiva</h1>
-            <p>Guia de medicamentos utilizados em CTI • Clique nos cards para ver descrições</p>
+            <p>Guia completo de medicamentos utilizados em CTI</p>
+            <p class="click-hint">👆 Clique em qualquer medicamento para ver sua descrição</p>
         </div>
 
         <div class="search-container">
@@ -353,574 +355,574 @@
                 { 
                     commercial: "Fentanil", 
                     generic: "Fentanila",
-                    description: "Analgésico opioide potente usado para alívio de dor intensa, anestesia geral e sedação em procedimentos. Possui início de ação rápido e curta duração."
+                    description: "Para que serve: Analgesia potente e sedação em pacientes graves e intubados.\n\nO que observar: FR, SpO2, PA, nível de sedação, pupilas.\n\nCuidados de Enfermagem: Uso em bomba de infusão contínua. Alto risco de depressão respiratória. Monitorar sinais vitais rigorosamente."
                 },
                 { 
                     commercial: "Diprivan", 
                     generic: "Propofol",
-                    description: "Anestésico intravenoso de ação rápida usado para indução e manutenção de anestesia geral e sedação em UTI. Apresenta recuperação rápida e suave."
+                    description: "Para que serve: Sedação profunda em UTI e indução anestésica.\n\nO que observar: PA, FC, FR, SpO2, nível de sedação (RASS).\n\nCuidados de Enfermagem: Infusão em veia calibrosa. Trocar equipo a cada 12h. Pode causar hipotensão. Proteger da luz."
                 },
                 { 
                     commercial: "Xilocaína", 
                     generic: "Lidocaína",
-                    description: "Anestésico local e antiarrítmico. Bloqueia canais de sódio, prevenindo a geração e condução de impulsos nervosos. Usado também em arritmias ventriculares."
+                    description: "Para que serve: Anestesia local e tratamento de arritmias ventriculares.\n\nO que observar: ECG, PA, FC, sinais de toxicidade (confusão, tremores, convulsões).\n\nCuidados de Enfermagem: Atenção à dose máxima. Monitorar arritmias. Ter material de emergência disponível."
                 }
             ],
             "Ansiolíticos": [
                 { 
                     commercial: "Frontal", 
                     generic: "Alprazolam",
-                    description: "Benzodiazepínico usado no tratamento de ansiedade e transtorno do pânico. Possui início de ação rápido e meia-vida intermediária."
+                    description: "Para que serve: Controle de ansiedade e agitação em pacientes conscientes.\n\nO que observar: Nível de consciência, FR, SpO2, sinais de sedação excessiva.\n\nCuidados de Enfermagem: Risco de dependência. Observar sonolência. Não suspender abruptamente."
                 },
                 { 
                     commercial: "Valium", 
                     generic: "Diazepam",
-                    description: "Benzodiazepínico de longa ação usado para ansiedade, espasmos musculares, convulsões e sedação. Possui propriedades ansiolíticas, anticonvulsivantes e relaxantes musculares."
+                    description: "Para que serve: Sedação, controle de convulsões e abstinência alcoólica.\n\nO que observar: Nível de consciência, FR, presença de convulsões, sinais de abstinência.\n\nCuidados de Enfermagem: Pode ser usado EV (injetar lentamente). Manter grades elevadas. Risco de queda."
                 },
                 { 
                     commercial: "Lorax", 
                     generic: "Lorazepam",
-                    description: "Benzodiazepínico de ação intermediária usado para ansiedade, insônia e status epilepticus. Amplamente utilizado em UTI para sedação e controle de agitação."
+                    description: "Para que serve: Ansiedade, insônia e controle de crises convulsivas.\n\nO que observar: Nível de sedação, FR, SpO2, atividade convulsiva.\n\nCuidados de Enfermagem: Administrar VO ou SL. Avaliar eficácia. Precauções para quedas."
                 },
                 { 
                     commercial: "Urbanil", 
                     generic: "Clobazam",
-                    description: "Benzodiazepínico usado principalmente como anticonvulsivante adjuvante. Também possui propriedades ansiolíticas com menor potencial sedativo."
+                    description: "Para que serve: Ansiedade e adjuvante no tratamento de epilepsia.\n\nO que observar: Frequência de crises convulsivas, nível de ansiedade, sedação.\n\nCuidados de Enfermagem: Uso prolongado. Orientar sobre sonolência. Não dirigir ou operar máquinas."
                 }
             ],
             "Anticonvulsivantes": [
                 { 
                     commercial: "Gardenal", 
                     generic: "Fenobarbital",
-                    description: "Barbitúrico anticonvulsivante de longa ação. Usado no tratamento de convulsões tônico-clônicas e parciais. Também possui propriedades sedativas e hipnóticas."
+                    description: "Para que serve: Controle de crises epilépticas e abstinência alcoólica.\n\nO que observar: Frequência de convulsões, nível de consciência, FR, SpO2.\n\nCuidados de Enfermagem: Sonolência intensa. Risco de queda. Manter ambiente seguro com grades."
                 },
                 { 
                     commercial: "Hidantal", 
                     generic: "Fenitoína",
-                    description: "Anticonvulsivante usado no tratamento e prevenção de crises epilépticas. Estabiliza membranas neuronais bloqueando canais de sódio voltagem-dependentes."
+                    description: "Para que serve: Prevenção e tratamento de crises epilépticas.\n\nO que observar: Atividade convulsiva, nível sérico, arritmias cardíacas, nistagmo.\n\nCuidados de Enfermagem: Infusão EV lenta (máx 50mg/min). Pode causar flebite - veia calibrosa. Fazer em soro fisiológico."
                 },
                 { 
                     commercial: "Rivotril", 
                     generic: "Clonazepam",
-                    description: "Benzodiazepínico anticonvulsivante usado no tratamento de epilepsia, transtorno do pânico e espasmos musculares. Possui ação prolongada."
+                    description: "Para que serve: Epilepsia, transtorno do pânico e ansiedade.\n\nO que observar: Controle de crises, nível de sedação, FR, comportamento.\n\nCuidados de Enfermagem: Pode causar dependência. Administração VO ou SL. Observar sonolência."
                 },
                 { 
                     commercial: "Neurontin", 
                     generic: "Gabapentina",
-                    description: "Anticonvulsivante usado no tratamento de epilepsia parcial e dor neuropática. Atua modulando canais de cálcio voltagem-dependentes."
+                    description: "Para que serve: Epilepsia parcial e dor neuropática.\n\nO que observar: Controle da dor, frequência de crises, tontura, sonolência.\n\nCuidados de Enfermagem: Administração VO. Pode causar edema periférico. Ajustar dose em insuficiência renal."
                 },
                 { 
                     commercial: "Tegretol", 
                     generic: "Carbamazepina",
-                    description: "Anticonvulsivante usado no tratamento de epilepsia, neuralgia do trigêmeo e transtorno bipolar. Bloqueia canais de sódio voltagem-dependentes."
+                    description: "Para que serve: Epilepsia, neuralgia do trigêmeo e transtorno bipolar.\n\nO que observar: Frequência de crises, sinais de toxicidade, hemograma (leucopenia).\n\nCuidados de Enfermagem: Administrar com alimentos. Monitorar níveis séricos. Orientar sobre tonturas."
                 },
                 { 
                     commercial: "Depakene", 
                     generic: "Ácido valproico",
-                    description: "Anticonvulsivante de amplo espectro usado no tratamento de diversos tipos de epilepsia, transtorno bipolar e profilaxia de enxaqueca. Atua aumentando níveis de GABA."
+                    description: "Para que serve: Diversos tipos de epilepsia e transtorno bipolar.\n\nO que observar: Controle de crises, função hepática, sangramento, tremores.\n\nCuidados de Enfermagem: Hepatotóxico. Administrar com alimentos. Monitorar enzimas hepáticas."
                 }
             ],
             "Antidepressivos": [
                 { 
                     commercial: "Prozac", 
                     generic: "Fluoxetina",
-                    description: "Antidepressivo inibidor seletivo da recaptação de serotonina (ISRS). Usado no tratamento de depressão, transtorno obsessivo-compulsivo e bulimia nervosa."
+                    description: "Para que serve: Depressão, ansiedade, TOC e bulimia.\n\nO que observar: Humor, comportamento suicida, agitação, insônia.\n\nCuidados de Enfermagem: Administrar pela manhã. Efeito terapêutico demora 2-4 semanas. Orientar sobre adesão ao tratamento."
                 },
                 { 
                     commercial: "Tryptanol", 
                     generic: "Amitriptilina",
-                    description: "Antidepressivo tricíclico usado no tratamento de depressão, dor neuropática, enxaqueca profilática e insônia. Possui efeitos sedativos significativos."
+                    description: "Para que serve: Depressão, dor neuropática crônica e enxaqueca.\n\nO que observar: Nível de sedação, PA (pode causar hipotensão), boca seca, constipação.\n\nCuidados de Enfermagem: Dar à noite (causa sonolência). Risco de queda. Orientar higiene oral."
                 }
             ],
             "Analgésicos": [
                 { 
                     commercial: "Novalgina", 
                     generic: "Dipirona",
-                    description: "Analgésico e antipirético não opioide usado para dor leve a moderada e febre. Possui também propriedades espasmolíticas."
+                    description: "Para que serve: Dor leve a moderada e febre.\n\nO que observar: Temperatura, alívio da dor, reações alérgicas, PA.\n\nCuidados de Enfermagem: Pode ser VO, EV ou IM. EV lento (risco de hipotensão). Anotar horário para aprazamento."
                 },
                 { 
                     commercial: "Tylenol", 
                     generic: "Paracetamol",
-                    description: "Analgésico e antipirético usado para dor leve a moderada e febre. Não possui propriedades anti-inflamatórias significativas. Seguro em doses terapêuticas."
+                    description: "Para que serve: Dor e febre leve a moderada.\n\nO que observar: Temperatura, alívio da dor, dose total diária (máx 4g/dia).\n\nCuidados de Enfermagem: Hepatotóxico em altas doses. Respeitar intervalo mínimo de 4-6h. Administração VO ou EV."
                 },
                 { 
                     commercial: "Dimorf", 
                     generic: "Morfina",
-                    description: "Analgésico opioide potente usado para dor moderada a severa. Padrão-ouro para analgesia em dor aguda intensa e dor oncológica."
+                    description: "Para que serve: Dor intensa (pós-operatória, oncológica, IAM).\n\nO que observar: FR, SpO2, nível de dor (escala), pupilas, náuseas, constipação.\n\nCuidados de Enfermagem: Controle rigoroso (portaria 344). Risco de depressão respiratória. Ter naloxona disponível."
                 },
                 { 
                     commercial: "Tramal", 
                     generic: "Tramadol",
-                    description: "Analgésico opioide fraco com ação dual: agonista opioide e inibidor de recaptação de serotonina/noradrenalina. Usado para dor moderada."
+                    description: "Para que serve: Dor moderada a moderadamente intensa.\n\nO que observar: Intensidade da dor, náuseas, tonturas, constipação.\n\nCuidados de Enfermagem: Pode ser VO, EV ou IM. Risco de convulsões em altas doses. Orientar sobre tonturas."
                 },
                 { 
                     commercial: "Fentanil", 
                     generic: "Fentanila",
-                    description: "Analgésico opioide potente (50-100x mais que morfina) usado para dor severa, anestesia e sedação em UTI. Início de ação rápido."
+                    description: "Para que serve: Analgesia potente em sedação e anestesia.\n\nO que observar: FR, SpO2, PA, nível de sedação e dor.\n\nCuidados de Enfermagem: Uso em BIC. Opioide muito potente. Depressão respiratória grave. Material de IOT à beira do leito."
                 }
             ],
             "Antipsicóticos": [
                 { 
                     commercial: "Haldol", 
                     generic: "Haloperidol",
-                    description: "Antipsicótico típico usado no tratamento de psicoses, esquizofrenia, delirium e agitação psicomotora. Amplamente usado em UTI para controle de delirium."
+                    description: "Para que serve: Agitação psicomotora, delirium, psicose e náuseas refratárias.\n\nO que observar: Nível de agitação, sintomas extrapiramidais (tremores, rigidez), ECG (QT).\n\nCuidados de Enfermagem: Pode ser VO, IM ou EV. Risco de distonia aguda. Ter biperideno disponível."
                 },
                 { 
                     commercial: "Seroquel", 
                     generic: "Quetiapina",
-                    description: "Antipsicótico atípico usado no tratamento de esquizofrenia, transtorno bipolar e depressão. Possui menor risco de efeitos extrapiramidais."
+                    description: "Para que serve: Esquizofrenia, transtorno bipolar e agitação.\n\nO que observar: Sedação, PA (hipotensão ortostática), glicemia.\n\nCuidados de Enfermagem: Causa sonolência. Precaução para quedas. Administrar VO, preferencialmente à noite."
                 },
                 { 
                     commercial: "Risperidal", 
                     generic: "Risperidona",
-                    description: "Antipsicótico atípico usado no tratamento de esquizofrenia, transtorno bipolar e irritabilidade associada ao autismo."
+                    description: "Para que serve: Esquizofrenia, transtorno bipolar e agitação em idosos.\n\nO que observar: Agitação, sintomas extrapiramidais, PA, peso.\n\nCuidados de Enfermagem: Administração VO. Pode causar hipotensão. Orientar sobre ganho de peso."
                 }
             ],
             "Hipnóticos Sedativos": [
                 { 
                     commercial: "Dormonid", 
                     generic: "Midazolam",
-                    description: "Benzodiazepínico de ação curta usado para sedação, indução anestésica e procedimentos. Amplamente utilizado em UTI para sedação consciente e ventilação mecânica."
+                    description: "Para que serve: Sedação para procedimentos, indução anestésica e crises convulsivas.\n\nO que observar: FR, SpO2, PA, nível de sedação (RASS).\n\nCuidados de Enfermagem: Pode ser EV, IM ou VO. Amnésia anterógrada. Ter flumazenil disponível. Depressão respiratória."
                 }
             ],
             "Antiarrítmicos": [
                 { 
                     commercial: "Adenocard", 
                     generic: "Adenosina",
-                    description: "Antiarrítmico usado no tratamento agudo de taquicardias supraventriculares. Possui ação ultra-rápida (segundos) e meia-vida muito curta."
+                    description: "Para que serve: Reversão de taquicardia supraventricular (TSV).\n\nO que observar: ECG contínuo, FC, PA, sintomas (dispneia, dor torácica).\n\nCuidados de Enfermagem: EV rápido em bolus seguido de flush rápido de SF. Pode causar assistolia transitória. Monitor obrigatório."
                 },
                 { 
                     commercial: "Ancoron", 
                     generic: "Amiodarona",
-                    description: "Antiarrítmico classe III usado no tratamento de arritmias ventriculares e supraventriculares graves. Possui múltiplos mecanismos de ação."
+                    description: "Para que serve: Arritmias ventriculares e supraventriculares graves, fibrilação atrial.\n\nO que observar: ECG, FC, PA, função tireoidiana, função hepática.\n\nCuidados de Enfermagem: EV em veia central ou calibrosa. Flebite. Fotossensibilidade. Uso prolongado - monitorar tireóide."
                 }
             ],
             "Bloqueadores Neuromusculares": [
                 { 
                     commercial: "Pavulon", 
                     generic: "Pancurônio",
-                    description: "Bloqueador neuromuscular não-despolarizante de longa duração usado para facilitar intubação e ventilação mecânica. Pode causar taquicardia."
+                    description: "Para que serve: Relaxamento muscular em IOT e ventilação mecânica.\n\nO que observar: TOF (trem de 4), parâmetros ventilatórios, FC (pode causar taquicardia).\n\nCuidados de Enfermagem: Paciente totalmente acordado mas paralisado - SEDAÇÃO OBRIGATÓRIA. Mudança de decúbito rigorosa."
                 },
                 { 
                     commercial: "Esmeron", 
                     generic: "Rocurônio",
-                    description: "Bloqueador neuromuscular não-despolarizante de ação intermediária. Usado para intubação de sequência rápida e manutenção de relaxamento muscular."
+                    description: "Para que serve: Intubação de sequência rápida e relaxamento muscular.\n\nO que observar: Parâmetros ventilatórios, TOF, nível de sedação.\n\nCuidados de Enfermagem: Início rápido. Paciente DEVE estar sedado. Atenção à proteção ocular (lagoftalmia)."
                 },
                 { 
                     commercial: "Norcuron", 
                     generic: "Vecurônio",
-                    description: "Bloqueador neuromuscular não-despolarizante de ação intermediária. Hemodinamicamente estável, sem efeitos cardiovasculares significativos."
+                    description: "Para que serve: Bloqueio neuromuscular em ventilação mecânica e cirurgias.\n\nO que observar: TOF, pressões ventilatórias, nível de sedação adequado.\n\nCuidados de Enfermagem: Reconstituir com AD. SEDAÇÃO OBRIGATÓRIA. Mudança de decúbito 2/2h. Cuidado com úlceras."
                 },
                 { 
                     commercial: "Ninbium", 
                     generic: "Cisatracúrio",
-                    description: "Bloqueador neuromuscular não-despolarizante de ação intermediária. Degradado por eliminação de Hofmann, não depende de função renal ou hepática."
+                    description: "Para que serve: Bloqueio neuromuscular, especial em disfunção renal/hepática.\n\nO que observar: TOF, parâmetros ventilatórios, sedação.\n\nCuidados de Enfermagem: Uso em BIC. Sedação OBRIGATÓRIA. Fisioterapia motora passiva. Proteção ocular."
                 }
             ],
             "Aminas e Substâncias Vasoativas": [
                 { 
                     commercial: "Dobutrex", 
                     generic: "Dobutamina",
-                    description: "Inotrópico positivo sintético. Agonista beta-1 adrenérgico usado no tratamento de insuficiência cardíaca aguda e choque cardiogênico."
+                    description: "Para que serve: Aumentar a força de contração do coração em IC aguda e choque cardiogênico.\n\nO que observar: PA, FC, débito urinário, sinais de perfusão (extremidades, enchimento capilar).\n\nCuidados de Enfermagem: BIC obrigatória. Acesso central. Monitorar arritmias. Não fazer em bolus."
                 },
                 { 
                     commercial: "Adrenalina", 
                     generic: "Epinefrina",
-                    description: "Catecolamina com ação alfa e beta adrenérgica. Usada em PCR, anafilaxia, choque séptico e broncoespasmo severo. Primeira linha em parada cardíaca."
+                    description: "Para que serve: PCR, anafilaxia, choque séptico e broncoespasmo grave.\n\nO que observar: ECG, PA, FC, SpO2, perfusão periférica.\n\nCuidados de Enfermagem: PCR: 1mg EV a cada 3-5min. Anafilaxia: 0,3-0,5mg IM. BIC para infusão contínua."
                 },
                 { 
                     commercial: "Efedrina", 
                     generic: "Efedrina",
-                    description: "Simpaticomimético de ação mista usado para tratar hipotensão, principalmente em contexto anestésico. Causa liberação de noradrenalina e ação direta."
+                    description: "Para que serve: Hipotensão durante anestesia e broncoespasmo.\n\nO que observar: PA, FC, SpO2.\n\nCuidados de Enfermagem: Bolus EV lento ou IM. Pode causar taquicardia e tremores."
                 },
                 { 
                     commercial: "Noradrenalina", 
                     generic: "Norepinefrina",
-                    description: "Vasopressor potente com ação alfa adrenérgica predominante. Primeira linha no tratamento de choque séptico. Aumenta pressão arterial com mínimo efeito cronotropico."
+                    description: "Para que serve: Choque séptico e outras formas de choque distributivo (1ª escolha).\n\nO que observar: PAM (meta ≥65mmHg), FC, débito urinário, extremidades, lactato.\n\nCuidados de Enfermagem: BIC obrigatória. Acesso central (necrose se extravasar). Titular dose conforme PAM."
                 },
                 { 
                     commercial: "Vasopressina", 
                     generic: "Vasopressina",
-                    description: "Hormônio antidiurético com potente ação vasoconstritora. Usado em choque refratário, especialmente séptico, e parada cardíaca. Não age via receptores adrenérgicos."
+                    description: "Para que serve: Choque refratário (vasoplegico) e hemorragia digestiva.\n\nO que observar: PA, débito urinário, sinais de isquemia (dor abdominal, cianose).\n\nCuidados de Enfermagem: BIC. Potente vasoconstritor. Atenção a isquemia periférica e mesentérica."
                 },
                 { 
                     commercial: "Isordil", 
                     generic: "Dinitrato de isossorbida",
-                    description: "Vasodilatador nitrato usado no tratamento de angina, insuficiência cardíaca e hipertensão pulmonar. Reduz pré e pós-carga cardíaca."
+                    description: "Para que serve: Angina, IC aguda e edema agudo de pulmão.\n\nO que observar: PA (hipotensão), FC, dor torácica, ausculta pulmonar.\n\nCuidados de Enfermagem: SL ou EV. Causa cefaleia intensa. Manter PA sistólica >90mmHg."
                 }
             ],
             "Diuréticos": [
                 { 
                     commercial: "Lasix", 
                     generic: "Furosemida",
-                    description: "Diurético de alça potente que inibe reabsorção de sódio e cloro na alça de Henle. Usado em edema, ICC, hipertensão e insuficiência renal aguda."
+                    description: "Para que serve: Edema agudo de pulmão, IC descompensada e sobrecarga de volume.\n\nO que observar: Débito urinário, balanço hídrico, PA, ausculta pulmonar, K+ sérico.\n\nCuidados de Enfermagem: Pode ser VO, EV ou IM. EV lento (não >40mg/min). Monitorar eletrólitos (hipocalemia)."
                 },
                 { 
                     commercial: "Clorana", 
                     generic: "Ácido etacrínico",
-                    description: "Diurético de alça alternativo à furosemida. Usado em pacientes com alergia a sulfonamidas ou resistência a outros diuréticos de alça."
+                    description: "Para que serve: Edema refratário, alternativa à furosemida em alérgicos.\n\nO que observar: Débito urinário, eletrólitos, audição (ototoxicidade).\n\nCuidados de Enfermagem: Risco de hipocalemia. Monitorar K+. Administração EV lenta."
                 },
                 { 
                     commercial: "Aldactone", 
                     generic: "Espironolactona",
-                    description: "Diurético poupador de potássio, antagonista de aldosterona. Usado em ICC, hipertensão, ascite e hipocalemia. Reduz mortalidade em ICC grave."
+                    description: "Para que serve: IC, hipertensão, ascite (poupa potássio).\n\nO que observar: K+ sérico (risco de hipercalemia), débito urinário, PA.\n\nCuidados de Enfermagem: Não associar com outros poupadores de K+. Monitorar K+ sérico. Administração VO."
                 },
                 { 
                     commercial: "Manitol", 
                     generic: "Manitol",
-                    description: "Diurético osmótico usado para reduzir pressão intracraniana, tratar edema cerebral, insuficiência renal aguda oligúrica e glaucoma agudo."
+                    description: "Para que serve: Edema cerebral (reduzir PIC), rabdomiólise.\n\nO que observar: PIC, diurese, balanço hídrico, osmolaridade sérica, função renal.\n\nCuidados de Enfermagem: EV em veia calibrosa. Cristaliza em baixas temperaturas - aquecer se necessário. SVD obrigatória."
                 }
             ],
             "Broncodilatadores": [
                 { 
                     commercial: "Atrovent", 
                     generic: "Brometo de ipratrópio",
-                    description: "Broncodilatador anticolinérgico (antagonista muscarínico) usado no tratamento de DPOC e asma. Reduz broncoconstrição mediada por acetilcolina."
+                    description: "Para que serve: DPOC e asma (broncodilatação).\n\nO que observar: SpO2, padrão respiratório, ausculta pulmonar, FC.\n\nCuidados de Enfermagem: Nebulização ou inalação (spray). Pode ser associado com beta-2. Ação mais lenta que salbutamol."
                 },
                 { 
                     commercial: "Berotec", 
                     generic: "Fenoterol",
-                    description: "Broncodilatador beta-2 agonista de ação rápida usado no tratamento de broncoespasmo agudo em asma e DPOC."
+                    description: "Para que serve: Broncoespasmo agudo em asma e DPOC.\n\nO que observar: SpO2, FR, ausculta pulmonar, FC (taquicardia), tremores.\n\nCuidados de Enfermagem: Nebulização. Início rápido. Pode causar taquicardia e tremores. Monitorar FC."
                 },
                 { 
                     commercial: "Aerolin", 
                     generic: "Salbutamol",
-                    description: "Broncodilatador beta-2 agonista seletivo de curta ação. Primeira linha para alívio rápido de broncoespasmo em asma e DPOC."
+                    description: "Para que serve: Alívio rápido de broncoespasmo em crise asmática e DPOC.\n\nO que observar: SpO2, FR, sibilos, FC, tremores.\n\nCuidados de Enfermagem: Nebulização ou spray. Efeito em 5min. Pode causar taquicardia e tremores finos."
                 }
             ],
             "Anti-Hipertensivos": [
                 { 
                     commercial: "Nipride", 
                     generic: "Nitroprussiato de sódio",
-                    description: "Vasodilatador arterial e venoso potente de ação ultra-rápida. Usado em emergências hipertensivas e insuficiência cardíaca aguda. Requer monitorização rigorosa."
+                    description: "Para que serve: Emergência hipertensiva, IC aguda descompensada.\n\nO que observar: PA contínua (PAM), FC, sinais de intoxicação por cianeto (acidose).\n\nCuidados de Enfermagem: BIC obrigatória. Fotossensível (proteger da luz). Titular dose. Monitorização invasiva ideal."
                 },
                 { 
                     commercial: "Tridil", 
                     generic: "Nitroglicerina",
-                    description: "Vasodilatador nitrato usado em angina instável, IAM, emergências hipertensivas e ICC. Predominantemente venodilatador, reduz pré-carga."
+                    description: "Para que serve: SCA, angina instável, edema agudo de pulmão.\n\nO que observar: PA, FC, dor torácica, cefaleia.\n\nCuidados de Enfermagem: BIC. Equipo especial (absorve em PVC comum). Causa cefaleia intensa. Manter PA >90mmHg."
                 },
                 { 
                     commercial: "Coreg", 
                     generic: "Carvedilol",
-                    description: "Beta-bloqueador não seletivo com ação alfa-bloqueadora. Usado em ICC, hipertensão e pós-IAM. Reduz mortalidade em insuficiência cardíaca."
+                    description: "Para que serve: IC crônica, hipertensão, pós-IAM.\n\nO que observar: PA, FC, sinais de descompensação (dispneia, edema).\n\nCuidados de Enfermagem: Administrar com alimentos. Não suspender abruptamente. Pode causar bradicardia."
                 },
                 { 
                     commercial: "Selozok", 
                     generic: "Metoprolol",
-                    description: "Beta-bloqueador beta-1 seletivo usado em hipertensão, angina, arritmias, IAM e ICC. Reduz frequência cardíaca e contratilidade."
+                    description: "Para que serve: Hipertensão, angina, IAM, IC.\n\nO que observar: PA, FC (bradicardia), broncoespasmo em asmáticos.\n\nCuidados de Enfermagem: Pode ser VO ou EV. Contraindicado em asma grave. Monitorar FC (meta >50bpm)."
                 },
                 { 
                     commercial: "Inderal", 
                     generic: "Propranolol",
-                    description: "Beta-bloqueador não seletivo usado em hipertensão, angina, arritmias, tremor essencial, enxaqueca profilática e hipertireoidismo."
+                    description: "Para que serve: Hipertensão, angina, arritmias, varizes esofágicas.\n\nO que observar: PA, FC, glicemia (mascara hipoglicemia).\n\nCuidados de Enfermagem: Não usar em asmáticos. Administração VO. Suspensão gradual (risco de rebote)."
                 },
                 { 
                     commercial: "Balcor", 
                     generic: "Verapamil",
-                    description: "Bloqueador de canal de cálcio não-diidropiridínico. Usado em hipertensão, angina e arritmias supraventriculares. Reduz frequência cardíaca."
+                    description: "Para que serve: Hipertensão, angina, arritmias supraventriculares.\n\nO que observar: PA, FC, ECG, constipação intestinal.\n\nCuidados de Enfermagem: Pode ser VO ou EV. EV lento (risco de bradicardia e hipotensão). Não com beta-bloqueadores EV."
                 },
                 { 
                     commercial: "Nifedipina", 
                     generic: "Nifedipina",
-                    description: "Bloqueador de canal de cálcio diidropiridínico. Vasodilatador arterial potente usado em hipertensão e angina. Formulação de liberação prolongada preferida."
+                    description: "Para que serve: Hipertensão e angina.\n\nO que observar: PA, FC (taquicardia reflexa), edema de MMII, cefaleia.\n\nCuidados de Enfermagem: Administração VO. Pode causar edema maleolar. Evitar formulação de ação rápida SL."
                 },
                 { 
                     commercial: "Cozaar", 
                     generic: "Losartana",
-                    description: "Bloqueador do receptor de angiotensina II (BRA) usado em hipertensão, ICC e nefropatia diabética. Alternativa aos IECA quando há tosse."
+                    description: "Para que serve: Hipertensão, IC, nefropatia diabética.\n\nO que observar: PA, K+ sérico, creatinina.\n\nCuidados de Enfermagem: Administração VO. Monitorar função renal. Risco de hipercalemia."
                 },
                 { 
                     commercial: "Capotem", 
                     generic: "Captopril",
-                    description: "Inibidor da ECA (IECA) de curta ação usado em hipertensão, ICC, pós-IAM e nefropatia diabética. Neuroprotetor e cardioprotetor."
+                    description: "Para que serve: Hipertensão, IC, pós-IAM, nefropatia diabética.\n\nO que observar: PA, K+ sérico, creatinina, tosse seca.\n\nCuidados de Enfermagem: SL ou VO. Primeira dose pode causar hipotensão. Monitorar função renal e K+."
                 },
                 { 
                     commercial: "Renitec", 
                     generic: "Enalapril",
-                    description: "Inibidor da ECA de longa ação usado em hipertensão, ICC e disfunção ventricular pós-IAM. Reduz mortalidade em insuficiência cardíaca."
+                    description: "Para que serve: Hipertensão, IC, pós-IAM.\n\nO que observar: PA, K+, creatinina, tosse seca persistente.\n\nCuidados de Enfermagem: Administração VO. Efeito máximo em 4-6h. Monitorar função renal. Tosse é efeito comum."
                 },
                 { 
                     commercial: "Nepresol", 
                     generic: "Maleato de enalapril",
-                    description: "Forma de sal do enalapril, inibidor da ECA usado nas mesmas indicações: hipertensão, ICC e proteção cardiovascular."
+                    description: "Para que serve: Hipertensão, IC, proteção cardiovascular.\n\nO que observar: PA, K+, função renal, tosse.\n\nCuidados de Enfermagem: Mesmos cuidados do enalapril. Administração VO. Monitorar PA e eletrólitos."
                 },
                 { 
                     commercial: "Adalat", 
                     generic: "Nifedipina",
-                    description: "Bloqueador de canal de cálcio diidropiridínico. Vasodilatador arterial usado em hipertensão e angina vasoespástica (Prinzmetal)."
+                    description: "Para que serve: Hipertensão e angina.\n\nO que observar: PA, FC, cefaleia, edema periférico.\n\nCuidados de Enfermagem: Liberação prolongada para uso crônico. Evitar cápsulas de ação rápida. Pode causar taquicardia."
                 }
             ],
             "Hipolipemiantes": [
                 { 
                     commercial: "Zocor", 
                     generic: "Sinvastatina",
-                    description: "Estatina (inibidor da HMG-CoA redutase) usada para reduzir colesterol LDL e triglicerídeos. Previne eventos cardiovasculares e reduz mortalidade."
+                    description: "Para que serve: Reduzir colesterol e prevenir eventos cardiovasculares.\n\nO que observar: Dor muscular, fraqueza, enzimas hepáticas (TGO/TGP).\n\nCuidados de Enfermagem: Administrar à noite. Orientar sobre dor muscular (rabdomiólise). Monitorar função hepática."
                 }
             ],
             "Antiagregantes Plaquetários": [
                 { 
                     commercial: "AAS", 
                     generic: "Ácido acetilsalicílico",
-                    description: "Antiagregante plaquetário que inibe irreversivelmente ciclooxigenase. Usado em prevenção primária e secundária de eventos cardiovasculares e IAM agudo."
+                    description: "Para que serve: Prevenção de IAM, AVE e eventos cardiovasculares.\n\nO que observar: Sangramento (gengivorragia, petéquias, melena), dor epigástrica.\n\nCuidados de Enfermagem: Administrar com alimentos. Orientar sobre risco de sangramento. Dose baixa em prevenção (100-200mg)."
                 },
                 { 
                     commercial: "Plavix", 
                     generic: "Clopidogrel",
-                    description: "Antiagregante plaquetário inibidor de receptor P2Y12. Usado em síndrome coronariana aguda, pós-stent e prevenção de eventos cardiovasculares."
+                    description: "Para que serve: SCA, pós-stent, prevenção de eventos tromboembólicos.\n\nO que observar: Sangramento, hematomas, fezes escuras.\n\nCuidados de Enfermagem: Dupla antiagregação (AAS + clopidogrel) pós-stent. Orientar sobre sangramentos. Não suspender sem orientação."
                 },
                 { 
                     commercial: "Agrastat", 
                     generic: "Tirofibana",
-                    description: "Inibidor da glicoproteína IIb/IIIa plaquetária. Antiagregante potente usado em síndrome coronariana aguda de alto risco e intervenções coronárias percutâneas."
+                    description: "Para que serve: SCA de alto risco e angioplastia.\n\nO que observar: Sangramento ativo, hematomas, plaquetas, PA.\n\nCuidados de Enfermagem: BIC obrigatória. Risco elevado de sangramento. Evitar punções desnecessárias. Compressão prolongada."
                 }
             ],
             "Anticoagulantes": [
                 { 
                     commercial: "Heparina", 
                     generic: "Heparina",
-                    description: "Anticoagulante que potencializa antitrombina III. Usado em TEV, IAM, fibrilação atrial e durante hemodiálise. Requer monitorização com TTPa."
+                    description: "Para que serve: TEV, SCA, prevenção de trombose, hemodiálise.\n\nO que observar: TTPa (meta 1,5-2,5x), sangramento, plaquetas (risco de HITT).\n\nCuidados de Enfermagem: SC ou EV. Monitorar TTPa 6/6h até estabilizar. Atenção a sangramentos. Ter protamina disponível."
                 },
                 { 
                     commercial: "Clexane", 
                     generic: "Enoxaparina",
-                    description: "Heparina de baixo peso molecular. Usado em profilaxia e tratamento de TVP/TEP, síndrome coronariana aguda. Não requer monitorização rotineira."
+                    description: "Para que serve: TEV, SCA, profilaxia de trombose.\n\nO que observar: Sangramento, hematomas no local SC, plaquetas, creatinina.\n\nCuidados de Enfermagem: SC em abdome. Não aspirar ou massagear. Alternar locais. Não precisa TTPa de rotina."
                 },
                 { 
                     commercial: "Marevam", 
                     generic: "Varfarina",
-                    description: "Anticoagulante oral antagonista de vitamina K. Usado em fibrilação atrial, próteses valvares, TEV. Requer monitorização com INR."
+                    description: "Para que serve: FA, TEV crônico, próteses valvares metálicas.\n\nO que observar: INR (meta 2-3), sangramento, hematomas, interações medicamentosas.\n\nCuidados de Enfermagem: VO. Muitas interações. Orientar dieta (vitamina K). Monitorar INR. Ter vitamina K disponível."
                 },
                 { 
                     commercial: "Arixtra", 
                     generic: "Fondaparinux",
-                    description: "Inibidor sintético seletivo do fator Xa. Usado em profilaxia e tratamento de TEV e síndrome coronariana aguda. Meia-vida longa."
+                    description: "Para que serve: TEV, SCA. Alternativa à heparina.\n\nO que observar: Sangramento, função renal, plaquetas.\n\nCuidados de Enfermagem: SC 1x/dia. Não causa trombocitopenia por heparina. Atenção em insuficiência renal."
                 }
             ],
             "Inibidores de Secreção Gástrica": [
                 { 
                     commercial: "Nexium", 
                     generic: "Esomeprazol",
-                    description: "Inibidor de bomba de prótons (IBP) usado no tratamento de DRGE, úlceras pépticas, esofagite erosiva e profilaxia de úlcera de estresse em UTI."
+                    description: "Para que serve: Úlcera péptica, DRGE, profilaxia de úlcera de stress.\n\nO que observar: Dor epigástrica, sinais de sangramento digestivo.\n\nCuidados de Enfermagem: VO ou EV. Administrar antes das refeições. Proteção gástrica em pacientes críticos."
                 },
                 { 
                     commercial: "Pantoprazol", 
                     generic: "Pantoprazol",
-                    description: "Inibidor de bomba de prótons usado em DRGE, úlceras, síndrome de Zollinger-Ellison e profilaxia de sangramento gastrointestinal em pacientes críticos."
+                    description: "Para que serve: Profilaxia de úlcera de stress em UTI, DRGE, úlcera péptica.\n\nO que observar: Dor abdominal, náuseas, sangramento digestivo.\n\nCuidados de Enfermagem: VO ou EV. Uso rotineiro em pacientes críticos para proteção gástrica."
                 },
                 { 
                     commercial: "Antak", 
                     generic: "Ranitidina",
-                    description: "Antagonista H2 usado no tratamento de úlceras pépticas, DRGE e profilaxia de úlcera de estresse. Menos potente que IBP."
+                    description: "Para que serve: Úlcera péptica, DRGE, profilaxia de stress.\n\nO que observar: Dor epigástrica, sinais de sangramento.\n\nCuidados de Enfermagem: VO, EV ou IM. Menos potente que IBP. Ajustar dose em insuficiência renal."
                 },
                 { 
                     commercial: "Losec", 
                     generic: "Omeprazol",
-                    description: "Inibidor de bomba de prótons pioneiro. Usado em DRGE, úlceras pépticas, erradicação de H. pylori e profilaxia de sangramento gastrointestinal."
+                    description: "Para que serve: Úlcera péptica, DRGE, profilaxia de úlcera de stress.\n\nO que observar: Dor epigástrica, melena, hematêmese.\n\nCuidados de Enfermagem: VO (cápsulas não podem ser abertas) ou EV. Dar antes do café da manhã."
                 }
             ],
             "Antieméticos": [
                 { 
                     commercial: "Plasil", 
                     generic: "Metoclopramida",
-                    description: "Antiemético procinético antagonista dopaminérgico. Usado em náuseas, vômitos e gastroparesia. Pode causar efeitos extrapiramidais."
+                    description: "Para que serve: Náuseas, vômitos e gastroparesia.\n\nO que observar: Sintomas extrapiramidais (tremores, rigidez), sonolência.\n\nCuidados de Enfermagem: VO, EV ou IM. Evitar uso prolongado. Atenção em idosos (risco de parkinsonismo)."
                 },
                 { 
                     commercial: "Nausedrom", 
                     generic: "Ondansetrona",
-                    description: "Antagonista seletivo 5-HT3 usado em náuseas e vômitos induzidos por quimioterapia, radioterapia e pós-operatórios. Muito eficaz e bem tolerado."
+                    description: "Para que serve: Náuseas e vômitos pós-operatórios e por quimioterapia.\n\nO que observar: Cefaleia, constipação, intervalo QT.\n\nCuidados de Enfermagem: VO ou EV. Eficaz e bem tolerado. Monitorar ECG se cardiopata."
                 },
                 { 
                     commercial: "Digesan", 
                     generic: "Bromoprida",
-                    description: "Antiemético procinético similar à metoclopramida. Usado em náuseas, vômitos e distúrbios da motilidade gastrointestinal."
+                    description: "Para que serve: Náuseas, vômitos e distúrbios de motilidade.\n\nO que observar: Sintomas extrapiramidais, sonolência.\n\nCuidados de Enfermagem: Similar ao Plasil. VO, EV ou IM. Menos efeitos extrapiramidais."
                 }
             ],
             "Laxativos": [
                 { 
                     commercial: "Farlac", 
                     generic: "Lactulose",
-                    description: "Laxativo osmótico dissacarídeo sintético. Usado em constipação e encefalopatia hepática. Acidifica cólon reduzindo absorção de amônia."
+                    description: "Para que serve: Constipação e encefalopatia hepática.\n\nO que observar: Frequência e consistência das fezes, distensão abdominal, RHA.\n\nCuidados de Enfermagem: VO. Pode causar flatulência e cólicas. Meta: 2-3 evacuações/dia na encefalopatia."
                 },
                 { 
                     commercial: "Glicerina", 
                     generic: "Glicerol",
-                    description: "Laxativo osmótico de ação local usado via retal em supositórios. Estimula peristaltismo por irritação e lubrificação."
+                    description: "Para que serve: Constipação aguda (ação rápida).\n\nO que observar: Evacuação, dor abdominal, desconforto retal.\n\nCuidados de Enfermagem: Via retal (supositório). Ação em 15-30min. Lubrificar antes de inserir."
                 },
                 { 
                     commercial: "Peg", 
                     generic: "Polietilenoglicol",
-                    description: "Laxativo osmótico usado em constipação crônica e preparo intestinal. Retém água no lúmen intestinal sem causar desequilíbrio eletrolítico significativo."
+                    description: "Para que serve: Constipação crônica e preparo intestinal.\n\nO que observar: Padrão intestinal, hidratação, distensão abdominal.\n\nCuidados de Enfermagem: Diluir em água ou suco. Bem tolerado. Pode demorar 1-3 dias para efeito."
                 }
             ],
             "Corticoides": [
                 { 
                     commercial: "Decadron", 
                     generic: "Dexametasona",
-                    description: "Corticoide de alta potência e longa duração. Usado em edema cerebral, choque séptico, náusea quimioterápica, inflamação e condições alérgicas graves."
+                    description: "Para que serve: Edema cerebral, choque séptico, DPOC exacerbada, reações alérgicas.\n\nO que observar: Glicemia (hiperglicemia), PA, sinais de infecção, humor.\n\nCuidados de Enfermagem: VO, EV ou IM. Monitorar glicemia (aumenta muito). Não suspender abruptamente. Proteção gástrica."
                 },
                 { 
                     commercial: "Cortison", 
                     generic: "Cortisona",
-                    description: "Corticoide de baixa potência usado em terapia de reposição na insuficiência adrenal e condições inflamatórias leves."
+                    description: "Para que serve: Insuficiência adrenal e processos inflamatórios.\n\nO que observar: Glicemia, PA, sinais de Cushing, infecções.\n\nCuidados de Enfermagem: Reposição hormonal. Administrar com alimentos. Monitorar eletrólitos e glicemia."
                 },
                 { 
                     commercial: "Meticorten", 
                     generic: "Prednisona",
-                    description: "Corticoide de potência intermediária usado em doenças autoimunes, alergias, asma, DPOC exacerbado e condições inflamatórias diversas."
+                    description: "Para que serve: Doenças inflamatórias, autoimunes, alérgicas.\n\nO que observar: Glicemia, PA, ganho de peso, infecções oportunistas.\n\nCuidados de Enfermagem: VO. Dar com alimentos. Retirada gradual. Imunossupressão - atenção a infecções."
                 }
             ],
             "Antifúngicos Sistêmicos": [
                 { 
                     commercial: "Mycamine", 
                     generic: "Micafungina",
-                    description: "Equinocandina antifúngica que inibe síntese de glucana da parede celular fúngica. Usado em candidíase invasiva e profilaxia em transplantados."
+                    description: "Para que serve: Candidíase invasiva e profilaxia em transplante.\n\nO que observar: Função hepática, febre, calafrios durante infusão.\n\nCuidados de Enfermagem: EV em 1h. Monitorar função hepática. Bem tolerado."
                 },
                 { 
                     commercial: "Zoltec", 
                     generic: "Fluconazol",
-                    description: "Antifúngico triazólico usado em candidíase sistêmica e mucocutânea, criptococose e profilaxia fúngica. Excelente penetração no SNC."
+                    description: "Para que serve: Candidíase (oral, esofágica, invasiva) e criptococose.\n\nO que observar: Função hepática, interações medicamentosas.\n\nCuidados de Enfermagem: VO ou EV. Penetra bem no SNC. Monitorar enzimas hepáticas."
                 },
                 { 
                     commercial: "Anfotericina", 
                     generic: "Anfotericina B",
-                    description: "Antifúngico poliênico de amplo espectro. Padrão-ouro para infecções fúngicas invasivas graves. Nefrotóxico, requer monitorização cuidadosa."
+                    description: "Para que serve: Infecções fúngicas graves sistêmicas.\n\nO que observar: Febre e calafrios (pré-medicar), função renal, K+ e Mg séricos.\n\nCuidados de Enfermagem: EV lento (4-6h). Muito nefrotóxica. Hidratar bem. Monitorar eletrólitos e creatinina."
                 },
                 { 
                     commercial: "Micostatin", 
                     generic: "Nistatina",
-                    description: "Antifúngico poliênico usado topicamente e via oral (não absorvido) para candidíase oral, esofágica e cutânea."
+                    description: "Para que serve: Candidíase oral e intestinal (tópico).\n\nO que observar: Melhora das lesões orais (sapinho), tolerância GI.\n\nCuidados de Enfermagem: VO (suspensão). Bochechar e engolir. Higiene oral antes. Não comer/beber por 30min."
                 }
             ],
             "Glicopeptídeos": [
                 { 
                     commercial: "Targocid", 
                     generic: "Teicoplanina",
-                    description: "Antibiótico glicopeptídeo usado em infecções por Gram-positivos, especialmente MRSA. Similar à vancomicina mas com meia-vida mais longa."
+                    description: "Para que serve: Infecções graves por Gram+ incluindo MRSA.\n\nO que observar: Função renal, nível sérico (vancocinemia), reações de infusão.\n\nCuidados de Enfermagem: EV ou IM. Dose de ataque seguida de manutenção. Menos nefrotóxico que vanco."
                 },
                 { 
                     commercial: "Vanco", 
                     generic: "Vancomicina",
-                    description: "Antibiótico glicopeptídeo usado em infecções graves por Gram-positivos resistentes, especialmente MRSA, enterococos e C. difficile. Requer monitorização de níveis."
+                    description: "Para que serve: MRSA, meningite, endocardite, colite por C. difficile.\n\nO que observar: Função renal, vancocinemia (vale 10-20), síndrome do homem vermelho.\n\nCuidados de Enfermagem: EV lento (1-2h). Nefrotóxica. Fazer vancocinemia. Infusão rápida causa rubor e hipotensão."
                 }
             ],
             "Antimicrobianos": [
                 { 
                     commercial: "Poli B", 
                     generic: "Polimixina B",
-                    description: "Antibiótico polipeptídico usado em infecções por Gram-negativos multirresistentes, incluindo Pseudomonas e Acinetobacter. Nefrotóxico e neurotóxico."
+                    description: "Para que serve: Gram-negativos multirresistentes (Pseudomonas, Acinetobacter).\n\nO que observar: Função renal, débito urinário, parestesias, tontura.\n\nCuidados de Enfermagem: EV lento. Nefrotóxica e neurotóxica. Monitorar creatinina. Último recurso em MR."
                 },
                 { 
                     commercial: "Rifaldin", 
                     generic: "Rifampicina",
-                    description: "Antibiótico usado principalmente em tuberculose. Também usado em infecções estafilocócicas, profilaxia de meningite e endocardite em combinação."
+                    description: "Para que serve: Tuberculose, meningite meningocócica, lepra.\n\nO que observar: Função hepática, coloração alaranjada (urina, suor, lágrimas).\n\nCuidados de Enfermagem: VO. Hepatotóxica. Orientar sobre coloração alaranjada (normal). Muitas interações."
                 },
                 { 
                     commercial: "Tazocin", 
                     generic: "Piperacilina + Tazobactam",
-                    description: "Penicilina de amplo espectro combinada com inibidor de beta-lactamase. Usado em infecções intra-abdominais, pneumonias nosocomiais e sepse grave."
+                    description: "Para que serve: Infecções nosocomiais graves, incluindo Pseudomonas.\n\nO que observar: Temperatura, sinais de melhora/piora infecciosa, alergias.\n\nCuidados de Enfermagem: EV de 30min a 4h. Espectro amplo. Reconstituir conforme orientação."
                 },
                 { 
                     commercial: "Meropenem", 
                     generic: "Meropenem",
-                    description: "Carbapenêmico de amplo espectro usado em infecções graves por organismos multirresistentes, sepse, meningite bacteriana e infecções intra-abdominais."
+                    description: "Para que serve: Infecções graves por germes multirresistentes.\n\nO que observar: Sinais de infecção, função renal, convulsões.\n\nCuidados de Enfermagem: EV em 30min. Carbapenem de amplo espectro. Pode baixar limiar convulsivo."
                 },
                 { 
                     commercial: "Oxacilina", 
                     generic: "Oxacilina",
-                    description: "Penicilina resistente à penicilinase usada em infecções por Staphylococcus aureus sensível à meticilina (MSSA), incluindo endocardite e osteomielite."
+                    description: "Para que serve: Infecções por Staphylococcus aureus sensível (não MRSA).\n\nO que observar: Sinais de melhora, flebite no local EV, função hepática.\n\nCuidados de Enfermagem: EV em veia calibrosa (flebite comum). Trocar acesso regularmente. Não eficaz em MRSA."
                 },
                 { 
                     commercial: "Flagyl", 
                     generic: "Metronidazol",
-                    description: "Antimicrobiano com ação contra anaeróbios e protozoários. Usado em infecções intra-abdominais, colite por C. difficile, abscesso cerebral e amebíase."
+                    description: "Para que serve: Infecções por anaeróbios, colite por C. difficile, amebíase.\n\nO que observar: Melhora da diarreia, náuseas, gosto metálico.\n\nCuidados de Enfermagem: VO ou EV. Efeito dissulfiram (não usar álcool). Pode causar urina escura."
                 },
                 { 
                     commercial: "Rocefin", 
                     generic: "Ceftriaxona",
-                    description: "Cefalosporina de 3ª geração de amplo espectro. Usado em meningite, gonorreia, pneumonia, sepse e infecções graves. Dose única diária."
+                    description: "Para que serve: Meningite, pneumonia, sepse, gonorreia.\n\nO que observar: Sinais de infecção, função renal, icterícia em neonatos.\n\nCuidados de Enfermagem: EV ou IM. Dose única diária. Não misturar com cálcio em neonatos."
                 },
                 { 
                     commercial: "Claritron", 
                     generic: "Claritromicina",
-                    description: "Macrolídeo usado em infecções respiratórias, H. pylori, micobactérias atípicas. Melhor absorção e tolerabilidade que eritromicina."
+                    description: "Para que serve: Pneumonia atípica, H. pylori, micobactérias.\n\nO que observar: Sinais de melhora, náuseas, paladar alterado, QT.\n\nCuidados de Enfermagem: VO com ou sem alimentos. Interações medicamentosas. Monitorar ECG."
                 },
                 { 
                     commercial: "Maxcef", 
                     generic: "Cefepima",
-                    description: "Cefalosporina de 4ª geração de amplo espectro. Usado em infecções nosocomiais graves, neutropenia febril, pneumonia e infecções por Pseudomonas."
+                    description: "Para que serve: Neutropenia febril, infecções graves, meningite.\n\nO que observar: Temperatura, sinais de infecção, função renal, confusão mental.\n\nCuidados de Enfermagem: EV. 4ª geração. Pode causar neurotoxicidade. Monitorar nível de consciência."
                 },
                 { 
                     commercial: "Floxacin", 
                     generic: "Ciprofloxacino",
-                    description: "Fluoroquinolona de amplo espectro. Usado em infecções urinárias complicadas, respiratórias, intra-abdominais, osteomielite e antraz."
+                    description: "Para que serve: ITU, infecções respiratórias e GI, Pseudomonas.\n\nO que observar: Sinais de infecção, tendões (tendinite), confusão, QT.\n\nCuidados de Enfermagem: VO ou EV. Evitar exposição solar. Risco de ruptura de tendão. Não com leite/antiácidos."
                 }
             ],
             "Fármacos Mucolíticos": [
                 { 
                     commercial: "Acetilcisteína", 
                     generic: "N-acetilcisteína",
-                    description: "Mucolítico que rompe pontes dissulfeto no muco. Usado em secreções respiratórias espessas e como antídoto em intoxicação por paracetamol."
+                    description: "Para que serve: Fluidificar secreções em DPOC, antídoto em intoxicação por paracetamol.\n\nO que observar: Padrão respiratório, aspecto da secreção, náuseas.\n\nCuidados de Enfermagem: Nebulização ou VO/EV. Cheiro forte de enxofre. Em intoxicação: iniciar em 8h."
                 }
             ],
             "Hormônio Tireoidiano": [
                 { 
                     commercial: "Puran T4", 
                     generic: "Levotiroxina",
-                    description: "Hormônio tireoidiano sintético (T4) usado em reposição no hipotireoidismo, supressão de TSH em câncer de tireoide e coma mixedematoso."
+                    description: "Para que serve: Reposição hormonal em hipotireoidismo.\n\nO que observar: FC, PA, sintomas de hiper/hipotireoidismo, TSH.\n\nCuidados de Enfermagem: VO em jejum (30-60min antes café). Não com ferro ou cálcio. Dose ajustada por TSH."
                 }
             ],
             "Hormônio Hipotalâmico": [
                 { 
                     commercial: "Syntocinon", 
                     generic: "Ocitocina",
-                    description: "Hormônio hipotalâmico usado para indução e aumento do trabalho de parto, controle de hemorragia pós-parto e estimulação da ejeção do leite."
+                    description: "Para que serve: Indução de parto e controle de hemorragia pós-parto.\n\nO que observar: Contratilidade uterina, sangramento, PA, FC.\n\nCuidados de Enfermagem: EV em BIC. Titular conforme contrações. Risco de hipercontratilidade e hipotensão."
                 }
             ],
             "Manutenção da Homeostase de Glicose": [
                 { 
                     commercial: "Humulin", 
                     generic: "Insulina humana",
-                    description: "Hormônio pancreático usado no tratamento de diabetes mellitus tipo 1 e 2, cetoacidose diabética e controle glicêmico em pacientes críticos."
+                    description: "Para que serve: Controle da hiperglicemia em diabetes e pacientes críticos.\n\nO que observar: Glicemia capilar, sinais de hipoglicemia (sudorese, tremor, confusão).\n\nCuidados de Enfermagem: SC ou EV. Regular EV em BIC. NPH SC. Rodízio de local. HGT rigoroso. Ter glicose disponível."
                 }
             ],
             "Anti-Hemorrágico": [
                 { 
                     commercial: "Kanakion", 
                     generic: "Fitomenadiona (Vitamina K1)",
-                    description: "Vitamina K usada para reverter efeito de anticoagulantes cumarínicos, tratar deficiência de vitamina K e doença hemorrágica do recém-nascido."
+                    description: "Para que serve: Reverter efeito da varfarina, deficiência de vitamina K.\n\nO que observar: INR, sinais de sangramento, função hepática.\n\nCuidados de Enfermagem: VO, SC, IM ou EV lento. EV pode causar anafilaxia. Diluir e infundir devagar."
                 }
             ],
             "Redução de Gases": [
                 { 
                     commercial: "Luftal", 
                     generic: "Simeticona",
-                    description: "Antiflatulento que reduz tensão superficial de bolhas de gás no TGI. Usado em distensão abdominal, flatulência e preparo para exames diagnósticos."
+                    description: "Para que serve: Distensão abdominal, flatulência, cólicas.\n\nO que observar: Distensão abdominal, RHA, eliminação de flatos.\n\nCuidados de Enfermagem: VO. Seguro, sem efeitos adversos significativos. Uso comum em pós-operatório."
                 }
             ],
             "Imunossupressores": [
                 { 
                     commercial: "Myfortic", 
                     generic: "Micofenolato de sódio",
-                    description: "Imunossupressor inibidor de síntese de purinas. Usado em prevenção de rejeição em transplante de órgãos sólidos, geralmente combinado com outros imunossupressores."
+                    description: "Para que serve: Prevenir rejeição em transplante de órgãos.\n\nO que observar: Sinais de rejeição, infecções, leucopenia, diarreia.\n\nCuidados de Enfermagem: VO. Imunossupressão - cuidado com infecções. Hemograma regular. Teratogênico."
                 },
                 { 
                     commercial: "Prograf", 
                     generic: "Tacrolimo",
-                    description: "Imunossupressor inibidor de calcineurina. Usado em prevenção de rejeição em transplantes de órgãos. Mais potente que ciclosporina com perfil de efeitos colaterais diferente."
+                    description: "Para que serve: Prevenção de rejeição em transplantes.\n\nO que observar: Nível sérico, função renal, glicemia, tremores, infecções.\n\nCuidados de Enfermagem: VO de 12/12h. Nefrotóxico e diabetogênico. Nível sérico seriado. Muitas interações."
                 }
             ],
             "Soluções para Infusão": [
                 { 
                     commercial: "Flexbumin", 
                     generic: "Albumina Humana",
-                    description: "Proteína plasmática usada para expansão volêmica em hipovolemia, hipoalbuminemia grave, choque, grandes queimados e síndrome hepatorrenal."
+                    description: "Para que serve: Expansão volêmica em choque, hipoalbuminemia grave, grandes queimados.\n\nO que observar: PA, PVC, balanço hídrico, edema, albumina sérica.\n\nCuidados de Enfermagem: EV. Produto derivado de sangue. Atenção a sobrecarga volêmica. Monitorar PA."
                 }
             ],
             "Imunoterápico": [
                 { 
                     commercial: "Flebogamma", 
                     generic: "Imunoglobulina humana",
-                    description: "Concentrado de anticorpos usado em imunodeficiências primárias, púrpura trombocitopênica imune, síndrome de Guillain-Barré e doenças autoimunes."
+                    description: "Para que serve: Imunodeficiências, doenças autoimunes (PTI, Guillain-Barré), sepse neonatal.\n\nO que observar: Temperatura, calafrios, cefaleia, reações anafiláticas.\n\nCuidados de Enfermagem: EV lento. Derivado sanguíneo. Monitorar reações. Pode causar meningite asséptica."
                 }
             ]
         };
@@ -948,6 +950,28 @@
                 option.textContent = className;
                 classFilter.appendChild(option);
             });
+        }
+
+        function toggleDescription(card) {
+            const description = card.querySelector('.medication-description');
+            const isActive = card.classList.contains('active');
+            
+            // Close all other cards
+            document.querySelectorAll('.medication-card').forEach(c => {
+                if (c !== card) {
+                    c.classList.remove('active');
+                    c.querySelector('.medication-description').classList.remove('show');
+                }
+            });
+            
+            // Toggle current card
+            if (isActive) {
+                card.classList.remove('active');
+                description.classList.remove('show');
+            } else {
+                card.classList.add('active');
+                description.classList.add('show');
+            }
         }
 
         function renderMedications(searchTerm = '', filterClass = '') {
@@ -990,9 +1014,13 @@
                     const card = document.createElement('div');
                     card.className = 'medication-card';
                     
+                    const expandIcon = document.createElement('div');
+                    expandIcon.className = 'expand-icon';
+                    expandIcon.textContent = '▼';
+                    
                     const commercial = document.createElement('div');
                     commercial.className = 'medication-commercial';
-                    commercial.innerHTML = `${med.commercial} <span class="click-indicator">ⓘ</span>`;
+                    commercial.textContent = med.commercial;
                     
                     const generic = document.createElement('div');
                     generic.className = 'medication-generic';
@@ -1000,25 +1028,14 @@
                     
                     const description = document.createElement('div');
                     description.className = 'medication-description';
-                    description.innerHTML = `<div class="description-title">Descrição e Uso:</div>${med.description}`;
+                    description.textContent = med.description;
                     
+                    card.appendChild(expandIcon);
                     card.appendChild(commercial);
                     card.appendChild(generic);
                     card.appendChild(description);
                     
-                    card.addEventListener('click', function() {
-                        const wasActive = this.classList.contains('active');
-                        
-                        // Remove active class from all cards
-                        document.querySelectorAll('.medication-card').forEach(c => {
-                            c.classList.remove('active');
-                        });
-                        
-                        // Toggle active class on clicked card
-                        if (!wasActive) {
-                            this.classList.add('active');
-                        }
-                    });
+                    card.addEventListener('click', () => toggleDescription(card));
                     
                     grid.appendChild(card);
                 });
@@ -1059,10 +1076,6 @@
             searchInput.value = '';
             classFilter.value = '';
             renderMedications();
-            // Remove active class from all cards
-            document.querySelectorAll('.medication-card').forEach(c => {
-                c.classList.remove('active');
-            });
         });
 
         initializeApp();
