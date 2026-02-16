@@ -366,32 +366,37 @@
             background: #f8f9fa;
             border-bottom: 2px solid #dee2e6;
             overflow-x: auto;
+            gap: 5px;
+            padding: 10px;
+            justify-content: center;
             flex-wrap: wrap;
         }
 
         .calc-tab {
-            flex: 1;
-            min-width: 100px;
-            padding: 10px 8px;
+            flex: 0 0 auto;
+            padding: 10px 20px;
             text-align: center;
             cursor: pointer;
             border: none;
-            background: transparent;
-            font-size: 12px;
+            background: white;
+            font-size: 13px;
             font-weight: 600;
             color: #6c757d;
             transition: all 0.3s;
             white-space: nowrap;
+            border-radius: 8px;
+            border: 2px solid transparent;
         }
 
         .calc-tab:hover {
             background: #e9ecef;
+            border-color: #dee2e6;
         }
 
         .calc-tab.active {
-            color: #667eea;
-            background: white;
-            border-bottom: 3px solid #667eea;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
         }
 
         .calc-section {
@@ -519,10 +524,14 @@
                 padding: 12px 10px;
             }
 
+            .calc-tabs {
+                padding: 8px;
+                gap: 4px;
+            }
+
             .calc-tab {
-                flex: 0 0 50%;
+                padding: 8px 12px;
                 font-size: 11px;
-                padding: 8px 5px;
             }
 
             .calc-section {
@@ -549,7 +558,7 @@
             }
 
             .calc-tab {
-                flex: 0 0 33.333%;
+                padding: 6px 10px;
                 font-size: 10px;
             }
         }
@@ -559,7 +568,12 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Medicamentos de Terapia Intensiva</h1>
+            <h1>💊 Medicamentos de Terapia Intensiva</h1>
+            <p>Guia completo de medicamentos utilizados em CTI</p>
+            <p class="click-hint">👆 Clique em qualquer medicamento para ver sua descrição</p>
+            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.3);">
+                <p style="font-size: 0.95em; opacity: 0.9;">✨ Desenvolvido por <strong>Rafael Felisbino Rocha da Silva</strong></p>
+            </div>
         </div>
 
         <!-- NAVEGAÇÃO PRINCIPAL -->
