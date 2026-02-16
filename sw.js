@@ -1,4 +1,4 @@
-const cacheName = 'medcti-v1';
+const cacheName = 'medcti-v2';
 const resourcesToPrecache = [
   './',
   'index.html' // Se o seu arquivo principal tiver outro nome, troque aqui
