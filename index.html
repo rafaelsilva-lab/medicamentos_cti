@@ -30,19 +30,20 @@
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 40px;
+            padding: 30px 20px;
             text-align: center;
         }
 
         .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: 2em;
+            margin-bottom: 5px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .header p {
-            font-size: 1.1em;
+            font-size: 0.95em;
             opacity: 0.9;
+            margin-bottom: 5px;
         }
 
         .search-container {
@@ -280,12 +281,32 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                border-radius: 15px;
+            }
+
+            .header {
+                padding: 20px 15px;
+            }
+
             .header h1 {
-                font-size: 1.8em;
+                font-size: 1.5em;
+            }
+
+            .header p {
+                font-size: 0.85em;
             }
 
             .medications-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .search-container {
+                padding: 20px;
             }
 
             .search-box {
@@ -308,12 +329,12 @@
 
         .main-tab {
             flex: 1;
-            padding: 18px 20px;
+            padding: 15px 20px;
             text-align: center;
             cursor: pointer;
             border: none;
             background: transparent;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: #6c757d;
             transition: all 0.3s;
@@ -350,13 +371,13 @@
 
         .calc-tab {
             flex: 1;
-            min-width: 120px;
-            padding: 12px 10px;
+            min-width: 100px;
+            padding: 10px 8px;
             text-align: center;
             cursor: pointer;
             border: none;
             background: transparent;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: #6c757d;
             transition: all 0.3s;
@@ -375,8 +396,10 @@
 
         .calc-section {
             display: none;
-            padding: 30px;
+            padding: 25px;
             background: white;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .calc-section.active {
@@ -409,10 +432,10 @@
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 12px;
+            padding: 10px 12px;
             border: 2px solid #dee2e6;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             transition: border 0.3s;
         }
 
@@ -424,12 +447,12 @@
 
         .calc-btn {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
             border-radius: 10px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.2s;
@@ -492,17 +515,42 @@
 
         @media (max-width: 768px) {
             .main-tab {
-                font-size: 14px;
-                padding: 15px 10px;
+                font-size: 13px;
+                padding: 12px 10px;
             }
 
             .calc-tab {
                 flex: 0 0 50%;
-                font-size: 12px;
+                font-size: 11px;
+                padding: 8px 5px;
             }
 
             .calc-section {
                 padding: 15px;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            .info-box {
+                padding: 12px;
+                font-size: 0.9em;
+            }
+
+            .result-value {
+                font-size: 1.1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.3em;
+            }
+
+            .calc-tab {
+                flex: 0 0 33.333%;
+                font-size: 10px;
             }
         }
 
