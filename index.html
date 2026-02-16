@@ -298,21 +298,239 @@
                 width: 100%;
             }
         }
+    
+        /* ABAS PRINCIPAIS */
+        .main-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 3px solid #e9ecef;
+        }
+
+        .main-tab {
+            flex: 1;
+            padding: 18px 20px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            font-weight: 700;
+            color: #6c757d;
+            transition: all 0.3s;
+            border-bottom: 4px solid transparent;
+        }
+
+        .main-tab:hover {
+            background: #e9ecef;
+            color: #667eea;
+        }
+
+        .main-tab.active {
+            color: #667eea;
+            border-bottom: 4px solid #667eea;
+            background: white;
+        }
+
+        .main-section {
+            display: none;
+        }
+
+        .main-section.active {
+            display: block;
+        }
+
+        /* CALCULADORA */
+        .calc-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            overflow-x: auto;
+            flex-wrap: wrap;
+        }
+
+        .calc-tab {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 10px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-size: 13px;
+            font-weight: 600;
+            color: #6c757d;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .calc-tab:hover {
+            background: #e9ecef;
+        }
+
+        .calc-tab.active {
+            color: #667eea;
+            background: white;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .calc-section {
+            display: none;
+            padding: 30px;
+            background: white;
+        }
+
+        .calc-section.active {
+            display: block;
+            animation: fadeInCalc 0.3s;
+        }
+
+        @keyframes fadeInCalc {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .calc-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .calc-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .calc-result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .calc-result.show {
+            display: block;
+            animation: fadeInCalc 0.3s;
+        }
+
+        .calc-result h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .result-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2d3748;
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196f3;
+        }
+
+        .info-box-title {
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 5px;
+        }
+
+        .formula {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 10px 0;
+            border-left: 3px solid #ffc107;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .main-tab {
+                font-size: 14px;
+                padding: 15px 10px;
+            }
+
+            .calc-tab {
+                flex: 0 0 50%;
+                font-size: 12px;
+            }
+
+            .calc-section {
+                padding: 15px;
+            }
+        }
+
     </style>
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/822/822143.png">
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js');
-      }
-    </script>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Medicamentos de Terapia Intensiva</h1>
+            <h1>💊 Medicamentos de Terapia Intensiva</h1>
+            <p>Guia completo de medicamentos utilizados em CTI</p>
+            <p class="click-hint">👆 Clique em qualquer medicamento para ver sua descrição</p>
+            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.3);">
+                <p style="font-size: 0.95em; opacity: 0.9;">✨ Desenvolvido por <strong>Rafael Felisbino Rocha da Silva</strong></p>
+            </div>
         </div>
 
+        <!-- NAVEGAÇÃO PRINCIPAL -->
+        <div class="main-tabs">
+            <button class="main-tab active" onclick="showMainTab('medicamentos')">
+                📚 Medicamentos
+            </button>
+            <button class="main-tab" onclick="showMainTab('calculadora')">
+                🧮 Calculadora
+            </button>
+        </div>
+
+        <!-- SEÇÃO MEDICAMENTOS -->
+        <div id="medicamentos" class="main-section active">
         <div class="search-container">
             <div class="search-box">
                 <input 
@@ -353,6 +571,248 @@
             <p>Tente buscar por outro termo ou selecione uma classe diferente</p>
         </div>
     </div>
+
+            </div>
+        <!-- FIM SEÇÃO MEDICAMENTOS -->
+
+        <!-- SEÇÃO CALCULADORA -->
+        <div id="calculadora" class="main-section">
+            <div class="calc-tabs">
+                <button class="calc-tab active" onclick="showCalcTab('diluicao')">Diluição</button>
+                <button class="calc-tab" onclick="showCalcTab('gotejamento')">Gotejamento</button>
+                <button class="calc-tab" onclick="showCalcTab('dosePeso')">Dose/Peso</button>
+                <button class="calc-tab" onclick="showCalcTab('conversao')">Conversão</button>
+                <button class="calc-tab" onclick="showCalcTab('infusao')">Infusão</button>
+                <button class="calc-tab" onclick="showCalcTab('regra3')">Regra de 3</button>
+            </div>
+
+            <!-- DILUIÇÃO -->
+                <div id="diluicao" class="calc-section active">
+                    <div class="info-box">
+                        <div class="info-box-title">💡 O que é?</div>
+                        Calcula quanto de diluente (SF ou AD) adicionar ao medicamento.
+                    </div>
+
+                    <div class="form-group">
+                        <label>Dose prescrita (mg):</label>
+                        <input type="number" id="dil_dose" step="0.01" placeholder="Ex: 500">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Concentração do frasco (mg):</label>
+                        <input type="number" id="dil_concentracao" step="0.01" placeholder="Ex: 1000">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Volume desejado final (ml):</label>
+                        <input type="number" id="dil_volume" step="0.1" placeholder="Ex: 10">
+                    </div>
+
+                    <button class="calc-btn" onclick="calcularDiluicao()">Calcular</button>
+
+                    <div id="result_diluicao" class="calc-result">
+                        <h3>📊 Resultado</h3>
+                        <div class="formula">Fórmula: Volume a aspirar = (Dose × Volume final) ÷ Concentração</div>
+                        <div class="result-value" id="dil_resultado"></div>
+                    </div>
+                </div>
+
+                <!-- GOTEJAMENTO -->
+                <div id="gotejamento" class="calc-section">
+                    <div class="info-box">
+                        <div class="info-box-title">💡 O que é?</div>
+                        Calcula gotas/min ou microgotas/min para infusão gravitacional.
+                    </div>
+
+                    <div class="form-group">
+                        <label>Volume a infundir (ml):</label>
+                        <input type="number" id="got_volume" step="0.1" placeholder="Ex: 1000">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tempo de infusão:</label>
+                        <input type="number" id="got_tempo" step="0.1" placeholder="Ex: 8">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Unidade de tempo:</label>
+                        <select id="got_unidade_tempo">
+                            <option value="horas">Horas</option>
+                            <option value="minutos">Minutos</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipo de equipo:</label>
+                        <select id="got_tipo">
+                            <option value="macrogotas">Macrogotas (20 gts/ml)</option>
+                            <option value="microgotas">Microgotas (60 mcgts/ml)</option>
+                        </select>
+                    </div>
+
+                    <button class="calc-btn" onclick="calcularGotejamento()">Calcular</button>
+
+                    <div id="result_gotejamento" class="calc-result">
+                        <h3>📊 Resultado</h3>
+                        <div class="formula" id="got_formula"></div>
+                        <div class="result-value" id="got_resultado"></div>
+                    </div>
+                </div>
+
+                <!-- DOSE POR PESO -->
+                <div id="dosePeso" class="calc-section">
+                    <div class="info-box">
+                        <div class="info-box-title">💡 O que é?</div>
+                        Calcula dose baseada no peso do paciente (mg/kg, mcg/kg, mcg/kg/min).
+                    </div>
+
+                    <div class="form-group">
+                        <label>Peso do paciente (kg):</label>
+                        <input type="number" id="dp_peso" step="0.1" placeholder="Ex: 70">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Dose prescrita:</label>
+                        <input type="number" id="dp_dose" step="0.01" placeholder="Ex: 5">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Unidade:</label>
+                        <select id="dp_unidade">
+                            <option value="mg/kg">mg/kg (dose única)</option>
+                            <option value="mcg/kg">mcg/kg (dose única)</option>
+                            <option value="mcg/kg/min">mcg/kg/min (infusão contínua)</option>
+                            <option value="mg/kg/dia">mg/kg/dia (dose diária)</option>
+                        </select>
+                    </div>
+
+                    <button class="calc-btn" onclick="calcularDosePeso()">Calcular</button>
+
+                    <div id="result_dosePeso" class="calc-result">
+                        <h3>📊 Resultado</h3>
+                        <div class="formula">Dose total = Dose prescrita × Peso</div>
+                        <div class="result-value" id="dp_resultado"></div>
+                    </div>
+                </div>
+
+                <!-- CONVERSÃO -->
+                <div id="conversao" class="calc-section">
+                    <div class="info-box">
+                        <div class="info-box-title">💡 O que é?</div>
+                        Converte entre diferentes unidades de medida.
+                    </div>
+
+                    <div class="form-group">
+                        <label>Valor:</label>
+                        <input type="number" id="conv_valor" step="0.001" placeholder="Ex: 1000">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Converter de:</label>
+                        <select id="conv_de">
+                            <option value="g">g (gramas)</option>
+                            <option value="mg">mg (miligramas)</option>
+                            <option value="mcg">mcg (microgramas)</option>
+                            <option value="ml">ml (mililitros)</option>
+                            <option value="gotas">gotas</option>
+                            <option value="L">L (litros)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Para:</label>
+                        <select id="conv_para">
+                            <option value="g">g (gramas)</option>
+                            <option value="mg">mg (miligramas)</option>
+                            <option value="mcg">mcg (microgramas)</option>
+                            <option value="ml">ml (mililitros)</option>
+                            <option value="gotas">gotas</option>
+                            <option value="L">L (litros)</option>
+                        </select>
+                    </div>
+
+                    <button class="calc-btn" onclick="calcularConversao()">Calcular</button>
+
+                    <div id="result_conversao" class="calc-result">
+                        <h3>📊 Resultado</h3>
+                        <div class="result-value" id="conv_resultado"></div>
+                    </div>
+                </div>
+
+                <!-- INFUSÃO CONTÍNUA -->
+                <div id="infusao" class="calc-section">
+                    <div class="info-box">
+                        <div class="info-box-title">💡 O que é?</div>
+                        Calcula ml/h para bomba de infusão baseado em dose/peso/tempo.
+                    </div>
+
+                    <div class="form-group">
+                        <label>Dose prescrita (mcg/kg/min):</label>
+                        <input type="number" id="inf_dose" step="0.01" placeholder="Ex: 5">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Peso do paciente (kg):</label>
+                        <input type="number" id="inf_peso" step="0.1" placeholder="Ex: 70">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Concentração da solução (mg):</label>
+                        <input type="number" id="inf_concentracao" step="0.01" placeholder="Ex: 200">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Volume da solução (ml):</label>
+                        <input type="number" id="inf_volume" step="0.1" placeholder="Ex: 250">
+                    </div>
+
+                    <button class="calc-btn" onclick="calcularInfusao()">Calcular</button>
+
+                    <div id="result_infusao" class="calc-result">
+                        <h3>📊 Resultado</h3>
+                        <div class="formula">
+                            ml/h = (Dose × Peso × 60 × Volume) ÷ (Concentração × 1000)
+                        </div>
+                        <div class="result-value" id="inf_resultado"></div>
+                    </div>
+                </div>
+
+                <!-- REGRA DE 3 SIMPLES -->
+                <div id="regra3" class="calc-section">
+                    <div class="info-box">
+                        <div class="info-box-title">💡 O que é?</div>
+                        Regra de 3 simples para qualquer cálculo de medicação.
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tenho (concentração disponível):</label>
+                        <input type="number" id="r3_tenho_valor" step="0.001" placeholder="Ex: 1000">
+                        <input type="text" id="r3_tenho_unidade" placeholder="Unidade (ex: mg)" style="margin-top: 5px;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Em (volume/quantidade):</label>
+                        <input type="number" id="r3_em" step="0.001" placeholder="Ex: 10">
+                        <input type="text" id="r3_em_unidade" placeholder="Unidade (ex: ml)" style="margin-top: 5px;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Preciso (dose prescrita):</label>
+                        <input type="number" id="r3_preciso" step="0.001" placeholder="Ex: 500">
+                        <input type="text" id="r3_preciso_unidade" placeholder="Unidade (ex: mg)" style="margin-top: 5px;">
+                    </div>
+
+                    <button class="calc-btn" onclick="calcularRegra3()">Calcular</button>
+
+                    <div id="result_regra3" class="calc-result">
+                        <h3>📊 Resultado</h3>
+                        <div class="formula">X = (Preciso × Em) ÷ Tenho</div>
+                        <div class="result-value" id="r3_resultado"></div>
+                    </div>
+                </div>
+        </div>
+        <!-- FIM SEÇÃO CALCULADORA -->
+
 
     <script>
         const medications = {
@@ -1084,6 +1544,282 @@
         });
 
         initializeApp();
+
+
+        // ==================== NAVEGAÇÃO ABAS PRINCIPAIS ====================
+        function showMainTab(tabName) {
+            // Esconde todas as seções principais
+            document.querySelectorAll('.main-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active de todas as tabs principais
+            document.querySelectorAll('.main-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Mostra a seção selecionada
+            document.getElementById(tabName).classList.add('active');
+            
+            // Ativa a tab clicada
+            event.target.classList.add('active');
+        }
+
+        // ==================== NAVEGAÇÃO ABAS CALCULADORA ====================
+        function showCalcTab(tabName) {
+            // Esconde todas as seções de cálculo
+            document.querySelectorAll('.calc-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active de todas as tabs de cálculo
+            document.querySelectorAll('.calc-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Mostra a seção selecionada
+            document.getElementById(tabName).classList.add('active');
+            
+            // Ativa a tab clicada
+            event.target.classList.add('active');
+        }
+
+        // ==================== CÁLCULO DE DILUIÇÃO ====================
+        function calcularDiluicao() {
+            const dose = parseFloat(document.getElementById('dil_dose').value);
+            const concentracao = parseFloat(document.getElementById('dil_concentracao').value);
+            const volumeFinal = parseFloat(document.getElementById('dil_volume').value);
+            
+            if (!dose || !concentracao || !volumeFinal) {
+                alert('Preencha todos os campos!');
+                return;
+            }
+            
+            const volumeAspirar = (dose * volumeFinal) / concentracao;
+            const volumeDiluente = volumeFinal - volumeAspirar;
+            
+            const resultado = `
+                <strong>Volume a aspirar do frasco:</strong> ${volumeAspirar.toFixed(2)} ml<br>
+                <strong>Volume de diluente a adicionar:</strong> ${volumeDiluente.toFixed(2)} ml<br>
+                <strong>Volume final:</strong> ${volumeFinal} ml<br><br>
+                <em>Aspirar ${volumeAspirar.toFixed(2)} ml do frasco e completar com ${volumeDiluente.toFixed(2)} ml de diluente (SF ou AD).</em>
+            `;
+            
+            document.getElementById('dil_resultado').innerHTML = resultado;
+            document.getElementById('result_diluicao').classList.add('show');
+        }
+
+        // ==================== CÁLCULO DE GOTEJAMENTO ====================
+        function calcularGotejamento() {
+            const volume = parseFloat(document.getElementById('got_volume').value);
+            const tempo = parseFloat(document.getElementById('got_tempo').value);
+            const unidadeTempo = document.getElementById('got_unidade_tempo').value;
+            const tipo = document.getElementById('got_tipo').value;
+            
+            if (!volume || !tempo) {
+                alert('Preencha todos os campos!');
+                return;
+            }
+            
+            let gotas;
+            let unidade;
+            let formula;
+            
+            if (tipo === 'macrogotas') {
+                unidade = 'gotas/min';
+                
+                if (unidadeTempo === 'horas') {
+                    gotas = volume / (tempo * 3);
+                    formula = `Fórmula: Volume ÷ Tempo (h) ÷ 3<br>${volume} ÷ ${tempo} ÷ 3 = ${gotas.toFixed(0)}`;
+                } else {
+                    gotas = (volume * 20) / tempo;
+                    formula = `Fórmula: (Volume × 20) ÷ Tempo (min)<br>(${volume} × 20) ÷ ${tempo} = ${gotas.toFixed(0)}`;
+                }
+            } else {
+                unidade = 'microgotas/min';
+                
+                if (unidadeTempo === 'horas') {
+                    gotas = volume / tempo;
+                    formula = `Fórmula: Volume ÷ Tempo (h)<br>${volume} ÷ ${tempo} = ${gotas.toFixed(0)}`;
+                } else {
+                    gotas = (volume * 60) / tempo;
+                    formula = `Fórmula: (Volume × 60) ÷ Tempo (min)<br>(${volume} × 60) ÷ ${tempo} = ${gotas.toFixed(0)}`;
+                }
+            }
+            
+            const resultado = `
+                <strong style="font-size: 2em;">${gotas.toFixed(0)} ${unidade}</strong><br><br>
+                Volume: ${volume} ml<br>
+                Tempo: ${tempo} ${unidadeTempo}<br>
+                Tipo: ${tipo === 'macrogotas' ? 'Macrogotas (20 gts/ml)' : 'Microgotas (60 mcgts/ml)'}
+            `;
+            
+            document.getElementById('got_formula').innerHTML = formula;
+            document.getElementById('got_resultado').innerHTML = resultado;
+            document.getElementById('result_gotejamento').classList.add('show');
+        }
+
+        // ==================== CÁLCULO DOSE POR PESO ====================
+        function calcularDosePeso() {
+            const peso = parseFloat(document.getElementById('dp_peso').value);
+            const dose = parseFloat(document.getElementById('dp_dose').value);
+            const unidade = document.getElementById('dp_unidade').value;
+            
+            if (!peso || !dose) {
+                alert('Preencha todos os campos!');
+                return;
+            }
+            
+            const doseTotal = dose * peso;
+            let resultado = '';
+            
+            switch(unidade) {
+                case 'mg/kg':
+                    resultado = `
+                        <strong>Dose total: ${doseTotal.toFixed(2)} mg</strong><br><br>
+                        Paciente: ${peso} kg<br>
+                        Dose prescrita: ${dose} mg/kg<br>
+                        <em>Administrar ${doseTotal.toFixed(2)} mg em dose única.</em>
+                    `;
+                    break;
+                case 'mcg/kg':
+                    resultado = `
+                        <strong>Dose total: ${doseTotal.toFixed(2)} mcg</strong><br>
+                        <strong>Equivalente a: ${(doseTotal/1000).toFixed(3)} mg</strong><br><br>
+                        Paciente: ${peso} kg<br>
+                        Dose prescrita: ${dose} mcg/kg
+                    `;
+                    break;
+                case 'mcg/kg/min':
+                    const mcgPorMin = doseTotal;
+                    const mgPorMin = mcgPorMin / 1000;
+                    const mgPorHora = mgPorMin * 60;
+                    resultado = `
+                        <strong>${mcgPorMin.toFixed(2)} mcg/min</strong><br>
+                        <strong>${mgPorMin.toFixed(3)} mg/min</strong><br>
+                        <strong>${mgPorHora.toFixed(2)} mg/h</strong><br><br>
+                        Paciente: ${peso} kg<br>
+                        Dose prescrita: ${dose} mcg/kg/min
+                    `;
+                    break;
+                case 'mg/kg/dia':
+                    resultado = `
+                        <strong>Dose total diária: ${doseTotal.toFixed(2)} mg/dia</strong><br><br>
+                        Paciente: ${peso} kg<br>
+                        Dose prescrita: ${dose} mg/kg/dia<br>
+                        <em>Dividir conforme aprazamento (6/6h, 8/8h, 12/12h, etc.)</em>
+                    `;
+                    break;
+            }
+            
+            document.getElementById('dp_resultado').innerHTML = resultado;
+            document.getElementById('result_dosePeso').classList.add('show');
+        }
+
+        // ==================== CÁLCULO DE CONVERSÃO ====================
+        function calcularConversao() {
+            const valor = parseFloat(document.getElementById('conv_valor').value);
+            const de = document.getElementById('conv_de').value;
+            const para = document.getElementById('conv_para').value;
+            
+            if (!valor) {
+                alert('Preencha o valor!');
+                return;
+            }
+            
+            const conversoes = {
+                'g': 1000,
+                'mg': 1,
+                'mcg': 0.001,
+                'ml': null,
+                'gotas': null,
+                'L': null
+            };
+            
+            let resultado;
+            
+            if (conversoes[de] !== null && conversoes[para] !== null) {
+                const emMg = valor * conversoes[de];
+                const valorFinal = emMg / conversoes[para];
+                resultado = `<strong>${valorFinal.toFixed(6)} ${para}</strong>`;
+            }
+            else if ((de === 'ml' || de === 'gotas' || de === 'L') && (para === 'ml' || para === 'gotas' || para === 'L')) {
+                let emMl;
+                
+                if (de === 'ml') emMl = valor;
+                else if (de === 'gotas') emMl = valor / 20;
+                else if (de === 'L') emMl = valor * 1000;
+                
+                let valorFinal;
+                if (para === 'ml') valorFinal = emMl;
+                else if (para === 'gotas') valorFinal = emMl * 20;
+                else if (para === 'L') valorFinal = emMl / 1000;
+                
+                resultado = `<strong>${valorFinal.toFixed(3)} ${para}</strong>`;
+            }
+            else {
+                resultado = '<strong>Conversão não disponível entre essas unidades!</strong>';
+            }
+            
+            document.getElementById('conv_resultado').innerHTML = resultado;
+            document.getElementById('result_conversao').classList.add('show');
+        }
+
+        // ==================== CÁLCULO DE INFUSÃO CONTÍNUA ====================
+        function calcularInfusao() {
+            const dose = parseFloat(document.getElementById('inf_dose').value);
+            const peso = parseFloat(document.getElementById('inf_peso').value);
+            const concentracao = parseFloat(document.getElementById('inf_concentracao').value);
+            const volume = parseFloat(document.getElementById('inf_volume').value);
+            
+            if (!dose || !peso || !concentracao || !volume) {
+                alert('Preencha todos os campos!');
+                return;
+            }
+            
+            const mlPorHora = (dose * peso * 60 * volume) / (concentracao * 1000);
+            const mcgPorMin = dose * peso;
+            
+            const resultado = `
+                <strong>${mlPorHora.toFixed(2)} ml/h na bomba de infusão</strong><br><br>
+                Dose: ${dose} mcg/kg/min<br>
+                Peso: ${peso} kg<br>
+                Concentração: ${concentracao} mg em ${volume} ml<br>
+                Total: ${mcgPorMin.toFixed(2)} mcg/min (${(mcgPorMin/1000).toFixed(3)} mg/min)
+            `;
+            
+            document.getElementById('inf_resultado').innerHTML = resultado;
+            document.getElementById('result_infusao').classList.add('show');
+        }
+
+        // ==================== REGRA DE 3 SIMPLES ====================
+        function calcularRegra3() {
+            const tenho = parseFloat(document.getElementById('r3_tenho_valor').value);
+            const tenhoUnidade = document.getElementById('r3_tenho_unidade').value;
+            const em = parseFloat(document.getElementById('r3_em').value);
+            const emUnidade = document.getElementById('r3_em_unidade').value;
+            const preciso = parseFloat(document.getElementById('r3_preciso').value);
+            const precisoUnidade = document.getElementById('r3_preciso_unidade').value;
+            
+            if (!tenho || !em || !preciso) {
+                alert('Preencha todos os valores numéricos!');
+                return;
+            }
+            
+            const resultado = (preciso * em) / tenho;
+            
+            const resultadoHTML = `
+                <strong>${resultado.toFixed(3)} ${emUnidade}</strong><br><br>
+                <div style="background: white; padding: 15px; border-radius: 5px; margin-top: 10px;">
+                    Se tenho <strong>${tenho} ${tenhoUnidade}</strong> em <strong>${em} ${emUnidade}</strong>,<br>
+                    então <strong>${preciso} ${precisoUnidade}</strong> estão em <strong>${resultado.toFixed(3)} ${emUnidade}</strong>.
+                </div>
+            `;
+            
+            document.getElementById('r3_resultado').innerHTML = resultadoHTML;
+            document.getElementById('result_regra3').classList.add('show');
+        }
+
     </script>
 </body>
 </html>
