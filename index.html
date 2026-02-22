@@ -365,11 +365,11 @@
         /* CALCULADORA */
         .calc-tabs {
             display: flex;
-            background: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
+            background: transparent;
+            border-bottom: 2px solid #e9ecef;
             overflow-x: auto;
             gap: 5px;
-            padding: 10px;
+            padding: 15px 20px;
             justify-content: center;
             flex-wrap: wrap;
         }
@@ -401,10 +401,14 @@
             border-color: #667eea;
         }
 
+        .calc-content {
+            padding: 40px 20px;
+            background: white;
+            min-height: 400px;
+        }
+
         .calc-section {
             display: none;
-            padding: 25px;
-            background: white;
             max-width: 700px;
             margin: 0 auto;
         }
@@ -536,8 +540,12 @@
                 font-size: 11px;
             }
 
+            .calc-content {
+                padding: 30px 15px;
+            }
+
             .calc-section {
-                padding: 15px;
+                padding: 0;
             }
 
             .form-group {
@@ -641,6 +649,7 @@
                 <button class="calc-tab" onclick="showCalcTab('regra3')">Regra de 3</button>
             </div>
 
+            <div class="calc-content">
             <!-- DILUIÇÃO -->
                 <div id="diluicao" class="calc-section active">
                     <div class="info-box">
@@ -897,9 +906,12 @@
                         <div class="result-value" id="r3_resultado"></div>
                     </div>
                 </div>
+            </div><!-- fim calc-content -->
         </div>
         <!-- FIM SEÇÃO CALCULADORA -->
 
+    </div>
+    <!-- FIM CONTAINER -->
 
     <script>
         const medications = {
