@@ -15,11 +15,12 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 15px;
+            margin: 0;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
@@ -354,6 +355,7 @@
 
         .main-section {
             display: none;
+            min-height: 400px;
         }
 
         .main-section.active {
@@ -403,7 +405,7 @@
             display: none;
             padding: 25px;
             background: white;
-            max-width: 800px;
+            max-width: 700px;
             margin: 0 auto;
         }
 
@@ -568,7 +570,12 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Medicamentos de Terapia Intensiva</h1>
+            <h1>💊 Medicamentos de Terapia Intensiva</h1>
+            <p>Guia completo de medicamentos utilizados em CTI</p>
+            <p class="click-hint">👆 Clique em qualquer medicamento para ver sua descrição</p>
+            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.3);">
+                <p style="font-size: 0.95em; opacity: 0.9;">✨ Desenvolvido por <strong>Rafael Felisbino Rocha da Silva</strong></p>
+            </div>
         </div>
 
         <!-- NAVEGAÇÃO PRINCIPAL -->
@@ -633,6 +640,7 @@
                 <button class="calc-tab active" onclick="showCalcTab('diluicao')">Diluição</button>
                 <button class="calc-tab" onclick="showCalcTab('gotejamento')">Gotejamento</button>
                 <button class="calc-tab" onclick="showCalcTab('dosePeso')">Dose/Peso</button>
+                <button class="calc-tab" onclick="showCalcTab('pam')">PAM</button>
                 <button class="calc-tab" onclick="showCalcTab('conversao')">Conversão</button>
                 <button class="calc-tab" onclick="showCalcTab('infusao')">Infusão</button>
                 <button class="calc-tab" onclick="showCalcTab('regra3')">Regra de 3</button>
@@ -744,6 +752,38 @@
                         <h3>📊 Resultado</h3>
                         <div class="formula">Dose total = Dose prescrita × Peso</div>
                         <div class="result-value" id="dp_resultado"></div>
+                    </div>
+                </div>
+
+                <!-- PAM (Pressão Arterial Média) -->
+                <div id="pam" class="calc-section">
+                    <div class="info-box">
+                        <div class="info-box-title">💡 O que é?</div>
+                        Calcula a Pressão Arterial Média (PAM) a partir da PAS e PAD.
+                    </div>
+
+                    <div class="form-group">
+                        <label>Pressão Arterial Sistólica - PAS (mmHg):</label>
+                        <input type="number" id="pam_pas" step="1" placeholder="Ex: 120">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Pressão Arterial Diastólica - PAD (mmHg):</label>
+                        <input type="number" id="pam_pad" step="1" placeholder="Ex: 80">
+                    </div>
+
+                    <button class="calc-btn" onclick="calcularPAM()">Calcular</button>
+
+                    <div id="result_pam" class="calc-result">
+                        <h3>📊 Resultado</h3>
+                        <div class="formula">PAM = (PAS + 2 × PAD) ÷ 3</div>
+                        <div class="result-value" id="pam_resultado"></div>
+                        <div style="margin-top: 15px; padding: 12px; background: #e7f3ff; border-radius: 8px; font-size: 0.9em;">
+                            <strong>Valores de referência:</strong><br>
+                            • PAM normal: 70-100 mmHg<br>
+                            • PAM ideal para perfusão: ≥ 65 mmHg<br>
+                            • PAM crítico: < 60 mmHg
+                        </div>
                     </div>
                 </div>
 
@@ -1766,6 +1806,72 @@
             
             document.getElementById('dp_resultado').innerHTML = resultado;
             document.getElementById('result_dosePeso').classList.add('show');
+        }
+
+        // ==================== CÁLCULO DE PAM ====================
+        function calcularPAM() {
+            const pas = parseFloat(document.getElementById('pam_pas').value);
+            const pad = parseFloat(document.getElementById('pam_pad').value);
+            
+            if (!pas || !pad) {
+                alert('Preencha todos os campos!');
+                return;
+            }
+            
+            // Validação de valores
+            if (pas < 40 || pas > 300) {
+                alert('PAS deve estar entre 40 e 300 mmHg');
+                return;
+            }
+            
+            if (pad < 20 || pad > 200) {
+                alert('PAD deve estar entre 20 e 200 mmHg');
+                return;
+            }
+            
+            if (pad >= pas) {
+                alert('PAD deve ser menor que PAS!');
+                return;
+            }
+            
+            // Cálculo: PAM = (PAS + 2*PAD) / 3
+            const pam = (pas + 2 * pad) / 3;
+            
+            // Classificação
+            let classificacao = '';
+            let cor = '';
+            
+            if (pam < 60) {
+                classificacao = '⚠️ CRÍTICO - Risco de hipoperfusão';
+                cor = '#dc3545';
+            } else if (pam < 65) {
+                classificacao = '⚠️ ATENÇÃO - Abaixo do ideal';
+                cor = '#ffc107';
+            } else if (pam >= 65 && pam <= 100) {
+                classificacao = '✅ NORMAL - Perfusão adequada';
+                cor = '#28a745';
+            } else if (pam > 100 && pam <= 110) {
+                classificacao = '⚠️ ELEVADA - Monitorar';
+                cor = '#ffc107';
+            } else {
+                classificacao = '⚠️ MUITO ELEVADA - Avaliar';
+                cor = '#dc3545';
+            }
+            
+            const resultado = `
+                <strong style="font-size: 2.5em; color: ${cor};">${pam.toFixed(1)} mmHg</strong><br><br>
+                <div style="background: ${cor}20; padding: 12px; border-radius: 8px; border-left: 4px solid ${cor}; margin: 15px 0;">
+                    <strong style="color: ${cor};">${classificacao}</strong>
+                </div>
+                <div style="font-size: 0.95em; color: #6c757d;">
+                    PAS: ${pas} mmHg<br>
+                    PAD: ${pad} mmHg<br>
+                    PP (Pressão de Pulso): ${(pas - pad).toFixed(0)} mmHg
+                </div>
+            `;
+            
+            document.getElementById('pam_resultado').innerHTML = resultado;
+            document.getElementById('result_pam').classList.add('show');
         }
 
         // ==================== CÁLCULO DE CONVERSÃO ====================
