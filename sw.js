@@ -1,6 +1,6 @@
 // Service Worker com Auto-Atualização
 // ⚠️ IMPORTANTE: Muda esse número a cada atualização do site!
-const VERSION = '3.0.1';
+const VERSION = '3.0.2';
 const CACHE_NAME = `medicamentos-cti-v${VERSION}`;
 
 // Arquivos para cachear
