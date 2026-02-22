@@ -644,6 +644,7 @@
                 <button class="calc-tab" onclick="showCalcTab('gotejamento')">Gotejamento</button>
                 <button class="calc-tab" onclick="showCalcTab('dosePeso')">Dose/Peso</button>
                 <button class="calc-tab" onclick="showCalcTab('pam')">PAM</button>
+                <button class="calc-tab" onclick="showCalcTab('vasoativas')">Vasoativas</button>
                 <button class="calc-tab" onclick="showCalcTab('conversao')">Conversão</button>
                 <button class="calc-tab" onclick="showCalcTab('infusao')">Infusão</button>
                 <button class="calc-tab" onclick="showCalcTab('regra3')">Regra de 3</button>
@@ -787,6 +788,47 @@
                             • PAM normal: 70-100 mmHg<br>
                             • PAM ideal para perfusão: ≥ 65 mmHg<br>
                             • PAM crítico: < 60 mmHg
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DROGAS VASOATIVAS -->
+                <div id="vasoativas" class="calc-section">
+                    <div class="info-box">
+                        <div class="info-box-title">💡 O que é?</div>
+                        Calcula concentração e velocidade de infusão para drogas vasoativas (Noradrenalina, Dobutamina, Dopamina, etc).
+                    </div>
+
+                    <div class="form-group">
+                        <label>Peso do paciente (kg):</label>
+                        <input type="number" id="vaso_peso" step="0.1" placeholder="Ex: 70">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Dose prescrita (mcg/kg/min):</label>
+                        <input type="number" id="vaso_dose" step="0.01" placeholder="Ex: 0.1">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Quantidade da ampola (mg):</label>
+                        <input type="number" id="vaso_ampola" step="0.1" placeholder="Ex: 4">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Volume final diluído (ml):</label>
+                        <input type="number" id="vaso_volume" step="1" placeholder="Ex: 250">
+                    </div>
+
+                    <button class="calc-btn" onclick="calcularVasoativas()">Calcular</button>
+
+                    <div id="result_vasoativas" class="calc-result">
+                        <h3>📊 Resultado</h3>
+                        <div class="result-value" id="vaso_resultado"></div>
+                        <div style="margin-top: 15px; padding: 12px; background: #e7f3ff; border-radius: 8px; font-size: 0.9em;">
+                            <strong>💡 Dica:</strong><br>
+                            • Noradrenalina: 0.05-2 mcg/kg/min<br>
+                            • Dobutamina: 2.5-20 mcg/kg/min<br>
+                            • Dopamina: 2-20 mcg/kg/min
                         </div>
                     </div>
                 </div>
@@ -1879,6 +1921,98 @@
             
             document.getElementById('pam_resultado').innerHTML = resultado;
             document.getElementById('result_pam').classList.add('show');
+        }
+
+        // ==================== CÁLCULO DE DROGAS VASOATIVAS ====================
+        function calcularVasoativas() {
+            const peso = parseFloat(document.getElementById('vaso_peso').value);
+            const dose = parseFloat(document.getElementById('vaso_dose').value);
+            const ampola = parseFloat(document.getElementById('vaso_ampola').value);
+            const volume = parseFloat(document.getElementById('vaso_volume').value);
+            
+            if (!peso || !dose || !ampola || !volume) {
+                alert('Preencha todos os campos!');
+                return;
+            }
+            
+            // Validações
+            if (peso < 1 || peso > 300) {
+                alert('Peso deve estar entre 1 e 300 kg');
+                return;
+            }
+            
+            if (dose < 0.001 || dose > 100) {
+                alert('Dose deve estar entre 0.001 e 100 mcg/kg/min');
+                return;
+            }
+            
+            if (ampola <= 0) {
+                alert('Quantidade da ampola deve ser maior que 0');
+                return;
+            }
+            
+            if (volume <= 0) {
+                alert('Volume deve ser maior que 0');
+                return;
+            }
+            
+            // CÁLCULOS
+            
+            // 1. Concentração final (mg/ml e mcg/ml)
+            const concentracaoFinal = ampola / volume;
+            const concentracaoFinalMcg = concentracaoFinal * 1000; // converter mg/ml para mcg/ml
+            
+            // 2. Dose total em mcg/min
+            const doseTotalMcgMin = dose * peso;
+            
+            // 3. Dose total em mg/min
+            const doseTotalMgMin = doseTotalMcgMin / 1000;
+            
+            // 4. Dose total em mg/h
+            const doseTotalMgH = doseTotalMgMin * 60;
+            
+            // 5. Velocidade da bomba (ml/h)
+            // ml/h = (dose em mg/h) / (concentração em mg/ml)
+            const velocidadeBomba = doseTotalMgH / concentracaoFinal;
+            
+            const resultado = `
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white; margin-bottom: 20px;">
+                    <div style="font-size: 2.5em; font-weight: bold; margin-bottom: 10px;">
+                        ${velocidadeBomba.toFixed(1)} ml/h
+                    </div>
+                    <div style="font-size: 1.1em; opacity: 0.9;">
+                        Velocidade na bomba de infusão
+                    </div>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <strong>📊 Concentração Final:</strong><br>
+                    <span style="font-size: 1.2em; color: #667eea; font-weight: bold;">
+                        ${concentracaoFinal.toFixed(2)} mg/ml (${concentracaoFinalMcg.toFixed(0)} mcg/ml)
+                    </span><br>
+                    <span style="font-size: 0.9em; color: #6c757d;">
+                        (${ampola} mg em ${volume} ml)
+                    </span>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <strong>💉 Dados do paciente:</strong><br>
+                    Peso: ${peso} kg<br>
+                    Dose: ${dose} mcg/kg/min<br>
+                    Dose total: ${doseTotalMcgMin.toFixed(2)} mcg/min (${doseTotalMgMin.toFixed(4)} mg/min)
+                </div>
+                
+                <div style="background: #fff3cd; padding: 12px; border-radius: 8px; border-left: 4px solid #ffc107; font-size: 0.9em;">
+                    <strong>⚠️ Lembrete:</strong><br>
+                    • Sempre conferir a prescrição<br>
+                    • Verificar acesso venoso central<br>
+                    • Monitorar PA continuamente<br>
+                    • Atenção à extravasamento
+                </div>
+            `;
+            
+            document.getElementById('vaso_resultado').innerHTML = resultado;
+            document.getElementById('result_vasoativas').classList.add('show');
         }
 
         // ==================== CÁLCULO DE CONVERSÃO ====================
